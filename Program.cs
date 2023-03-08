@@ -109,7 +109,7 @@
          * 7 - Nil - The point where items are drained, and only spawns Error or Wrath. Occasionally spawns Rusanic
          * 
          * With the Relapse modifier, rapidly changes through the difficulties 1 till 5
-         * With the Eclipse modifier, caps it from 3 upwards and spawns new items/enemies (Tougher Mode)
+         * With the Eclipse modifier, caps it from 3 upwards and spawns more enemies (Tougher Mode)
          * With the Blackout modifier, hides most information from you, as well as when an enemy is spotting you. (Blind Mode)
          * With the B&D (blind and deaf) modifier, hides ALL information from you, exept for when an floor is completed. (DO NOT TRY THIS AT HOME)
          * With the Survivor modifier, disables any items at the start, disables Sin items, disables most stuff. Leaves you with unfiltered experience (Legacy Mode)
@@ -154,11 +154,48 @@
          * 9 = Summons An Sin of Choice
          * 10 = Summons a Random Sin
          * 11 = Exchanges your loadout for new items
+         * 12 = (Grants) Curses you with zodiac
          */
 
+        //1 Inflicts stun when nearby
         Item Camera = new Item("Camera", 1, 1, 3, 0, false);
-        Item SmokeBomb = new Item("SmokeBomb", 1, 2, 1, 0, false);
+
+        //2 Deters enemies
+        Item SmokeBomb = new Item("Smoke Bomb", 1, 2, 1, 0, false);
+        
+        //3 Grants extra steps
         Item Shoes = new Item("Shoes", 2, 3, 5, 0, false);
+        
+        //4 Turns into item of choice
+        Item EightBall = new Item("8-Ball", 5, 4, 1, 0, false);
+        Item BlackBox = new Item("---------", 5, 4, 1, 0, false);
+
+        //5 Turns into random items
+        Item sGift = new Item("Small Gift", 2, 5, 1, 0, false); //Gives 1 random
+        Item mGift = new Item("Medium Gift", 3, 5, 1, 0, false); //Gives 2 random
+        Item lGift = new Item("Large Gift", 4, 5, 1, 0, false); //Gives 3 random
+
+        //6 Kills yourself instantly
+        Item Knife = new Item("Knife", 4, 6, 1, 0, false); //100% chance
+        Item Gun = new Item("Russian", 3, 6, 1, 0, false); //50% chance
+
+        //7 "Confesses" for your sin, removes guilt debuff
+        Item OneSin = new Item("One Sin and 100 good deeds", 4, 7, 10, 0, false);
+        
+        //8 Cures HOPELESS
+        Item HOPE = new Item("HOPES AND DREAMS", 4, 8, 10, 0, false);
+        
+        //9 Summons sin of choice
+        Item VileDeed = new Item("Vile Deed", 3, 9, 3, 0, false);
+        
+        //10 Summons random sin
+        Item ThornCrown = new Item("Thorn Crown", 2, 10, 5, 0, false);
+        
+        //11 Swaps up your entire inv
+        Item CSlots = new Item("Crazy Slots", 5, 11, 1, 0, false);
+        
+        //12 Gives you zodiac, idk why you'd want this
+        Item DollarSign = new Item("Dollar Sign", 5, 12, 1, 0, false);
 
         //Variables that handle items and enemy generation
         int itemSpawnChance = 4; //This will be 1/4, so 8 is 1/8 (12.5%)
@@ -168,6 +205,7 @@
         bool sinModifier = false; //Automatically locks the value to 7 and assigns sinChooser to current floor
         int sinChooser = 0; //Read below
         int despairModifier = 0; //Goes up every time an monster is encountered can only be lowered while meeting the "Roland" entity, which will not kill you when despair is above 40
+        
         /*Sinchooser explaination:
          * 0 = error (Activates when the player encounters an error, chosen by default)
          * 1 = gluttony (Activates when a player has used more than 10 items during the current floor)
