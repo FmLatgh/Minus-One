@@ -248,5 +248,23 @@
         //Admin Client secret (USE AT YOUR OWN RISK)
         bool admintoggle = false; //To declare when the debug is activated
         string adminsecret = "DebugMe";
+
+        /*Although admin is in the works, here's on how it *should* work
+         * 
+         * help - displays commands
+         * 
+         * GAMEPLAY
+         * gib (itemname), gives an item
+         * in (sin), commits sin and forces it next round
+         * look, forces chase from ALL enemies on current floor
+         * gmod (mod), forces said modifier
+         * 
+         * DATA
+         * dip (value) (value), adds the first to the second
+         * rip (value) (value), removes value the second
+         * 
+         * 
+         * 
+         */
     }
 }
