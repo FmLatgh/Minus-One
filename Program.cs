@@ -26,7 +26,8 @@
          *  12 can’t really stop shit,
          *  so I’m still pushin like a mosh pit
          *  
-         *  7 RENDERS YOU COMPLETELY HOPELESS, -5 Steps (scales up), 
+         *  8 RENDERS YOU COMPLETELY HOPELESS, -5 Steps (scales up), 
+         *  9 Applies most of above :)
          */
         public int projRange = 3; // 3 by default
         public int speed = 1; //1 lowest, 3 highest (translates to steps
@@ -122,11 +123,13 @@
         //Enemy Database Management
         Enemy Error = new Enemy("Error", true, true, true, true, 6, 100, 10);
         Enemy Rusanic = new Enemy("Rusanic", false, true, true, true, 7, 7, 4);
-        Enemy CENSORED = new Enemy("[CENSORED]", false, false, true, true, 6, 3, 3); 
+        Enemy CENSORED = new Enemy("[CENSORED]", false, false, true, true, 8, 3, 3); 
         Enemy Walker = new Enemy("Walker", false, false, true, true, 1, 3, 2);
+        Enemy Gogh = new Enemy("Gogh", false, false, true, false, 0, 0, 3); //Special Enemy that kills if you have a GUN
         Enemy Seer = new Enemy("Seer", false, false, true, false, 0, 0, 3);
         Enemy Blight = new Enemy("Blight", false, true, true, true, 2, 1, 2);
         Enemy Clown = new Enemy("Clown", false, false, true, false, 0, 0, 4);
+        Enemy WN = new Enemy("White Night", false, true, true, true, 9, 2, 1);
         Enemy Roland = new Enemy("Roland", true, true, false, false, 0, 0, 0); //NPC, Sets Despair back to 0 if above 40
         Enemy Martin = new Enemy("Martin", true, true, false, false, 0, 0, 0); //NPC, offers compassion, or anything else, for a price...
         Enemy Binah = new Enemy("Binah", true, true, false, false, 0, 0, 0); //NPC, offers utillity items such as camera's
@@ -159,16 +162,18 @@
 
         //1 Inflicts stun when nearby
         Item Camera = new Item("Camera", 1, 1, 3, 0, false);
-
+        Item Flash = new Item("Flashbang", 1, 1, 3, 0, false);
+        
         //2 Deters enemies
         Item SmokeBomb = new Item("Smoke Bomb", 1, 2, 1, 0, false);
-        
+        Item Fart = new Item("Fart", 3, 2, 5, 0, false); //Farts last longer and are more effective
+
         //3 Grants extra steps
         Item Shoes = new Item("Shoes", 2, 3, 5, 0, false);
         
         //4 Turns into item of choice
         Item EightBall = new Item("8-Ball", 5, 4, 1, 0, false);
-        Item BlackBox = new Item("---------", 5, 4, 1, 0, false);
+        Item BlackBox = new Item("---------", 5, 4, 1, 0, false); //Has a 30% Chance to become a GUN
 
         //5 Turns into random items
         Item sGift = new Item("Small Gift", 2, 5, 1, 0, false); //Gives 1 random
@@ -180,14 +185,17 @@
         Item Gun = new Item("Russian", 3, 6, 1, 0, false); //50% chance
 
         //7 "Confesses" for your sin, removes guilt debuff
-        Item OneSin = new Item("One Sin and 100 good deeds", 4, 7, 10, 0, false);
-        
+        Item OneSin = new Item("One Sin and 100 good deeds", 4, 7, 10, 0, false); //100% Chance
+        Item JCross = new Item("Jesus Cross", 5, 7, 3, 0, false); //50-50, summons whitenight upon fail
+
         //8 Cures HOPELESS
-        Item HOPE = new Item("HOPES AND DREAMS", 4, 8, 10, 0, false);
-        
+        Item HOPE = new Item("HOPES AND DREAMS", 4, 8, 10, 0, false); //Cures "6" hopeless
+        Item HELP = new Item("HELPING HAND", 4, 8, 10, 0, false); //Cures "8" hopeless
+
         //9 Summons sin of choice
         Item VileDeed = new Item("Vile Deed", 3, 9, 3, 0, false);
-        
+        Item Contract = new Item("Contract", 3, 9, 3, 0, false); //"Reskin"
+
         //10 Summons random sin
         Item ThornCrown = new Item("Thorn Crown", 2, 10, 5, 0, false);
         
@@ -196,6 +204,7 @@
         
         //12 Gives you zodiac, idk why you'd want this
         Item DollarSign = new Item("Dollar Sign", 5, 12, 1, 0, false);
+        Item Constellation = new Item("Constellation", 5, 12, 1, 0, false);
 
         //Variables that handle items and enemy generation
         int itemSpawnChance = 4; //This will be 1/4, so 8 is 1/8 (12.5%)
