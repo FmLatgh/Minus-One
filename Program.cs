@@ -100,7 +100,6 @@
 
         /* Explaination
          * Diffulty is handled in integers, which also should up the spawn chances of rarer enemies
-         * 
          * 1 - Easy - Refuses to spawn any rarity 4 or highers, exept for sin requirements.
          * 2 - Medium - Refuses to spawn the rarest of enemies, will spawn tougher enemeies, and will make greater rewards, more enemies, and more button goals.
          * 3 - Hard - Allows spawning of all sorts of enemies, with even more button spawns. Powers some of the sins up.
