@@ -117,9 +117,6 @@
          * With the 1:1 modifier, pernamently sets difficulty to Easy, but unlocks all enemies, all items, at all. (Randomizer Mode)
          */
 
-        //Variables that handle menu coding
-        int MenuCase = 0;
-
         //Enemy Database Management
         Enemy Error = new Enemy("Error", true, true, true, true, 6, 100, 10);
         Enemy Rusanic = new Enemy("Rusanic", false, true, true, true, 7, 7, 4);
@@ -193,6 +190,23 @@
         Item DollarSign = new Item("Dollar Sign", 5, 12, 1, 0, false);
         Item Constellation = new Item("Constellation", 5, 12, 1, 0, false);
 
+        //Item arrays dependant on rarity
+        
+        //Common
+        var Common = new List<Item>();
+
+        //Uncommon
+        var Uncommon = new List<Item>();
+
+        //Rare
+        var Rare = new List<Item>();
+
+        //Epic
+        var Epic = new List<Item>();
+
+        //One of a Kind
+        var OneofAKind = new List<Item>();  
+
         //Variables that define Exotic Enemies Values
         int sinChooser = 0; //Read below
         int despairModifier = 0; //Goes up every time an monster is encountered can only be lowered while meeting the "Roland" entity, which will not kill you when despair is above 40
@@ -201,6 +215,7 @@
 
         //Variables that define Items and littering
         int littering = 20; // is an 1/definable % chance to spawn an item on a step
+        int rareCycles = 5;
 
         /*Sinchooser explaination:
          * 0 = error (Activates when the player encounters an error, chosen by default)
@@ -223,11 +238,10 @@
         Random eStep = new Random(); //Enemy step
         Random itemTrigger = new Random(); //50,50 for items like GUN
         Random projHitcheck = new Random(); //Checks if projectile HAS hit, becomes higher with range
-        Random itemSpawn = new Random(); //Checks 
+        Random itemSpawn = new Random(); //Checks if an item spawns in step range
+        Random pickRare = new Random(); //Select Rarity Category
         Random itemRare = new Random(); //Checks in rarity categories when finding item on the ground
-
-
-
+        
 
         //Variables that declare player status, such as stunned
         bool dead = false; //Checks for gameover
@@ -237,6 +251,8 @@
         int itemsUsed = 0;
         int stepsTaken = 0;
         int monstersEncountered = 0;
+
+        String name;
 
         int stepspeed = 0; //Defines amount of steps taken, also checks how much times an item will be checked, an enemy will spot
         int mood = 0; //Mood lowers despair, and will give bonus rewards when interacting with martin. will also serve as a step multiplier
@@ -269,8 +285,46 @@
          * PLAYER
          * ruina (ailmentInt), gives said ailment int
          * libraryofruina, shows ailmentInts
-         * 
-         * 
+         *
          */
+
+        //Loottable
+        void getItem(int rareCycles)
+        {
+            for (int i = 0; i < rareCycles; i++)
+            {
+
+            }
+        }
+
+        //Menu (FINALLY)
+        Console.WriteLine("Minus One: Descent To Madness.");
+        Console.WriteLine("Press any key to start.");
+        Console.ReadKey();
+
+        Console.WriteLine("What is your name, Traveller?");
+        name = Console.ReadLine();
+        Console.WriteLine("Very well, {0}.", name);
+        Console.WriteLine("Do you want to hear the tutorial? Y/N");
+        
+        string answer = Console.ReadLine();
+
+        if (answer == "Y")
+        {
+            Console.WriteLine("The premise is easy.");
+            Console.WriteLine("Your job is to get as deep as possible");
+            Console.WriteLine("You are not alone. There are monsters out there. Learn to survive and you will be fine.");
+            Console.WriteLine("There is no end. Don't expect there to be one exept death.");
+            Console.WriteLine("The Game will become more difficult the longer you are in the run.");
+            Console.WriteLine("===========================================================================");
+            Console.WriteLine("The Gameplay can be simplified to two actions; Items and Stepping.");
+            Console.WriteLine("STEPPING: Stepping is used to advance forward and complete your button/steps assignment.");
+            Console.WriteLine("ITEMS: You can find various ITEMS while STEPPING, which you can then use to advance your next STEP.");
+            Console.WriteLine("CHASE: Entities can chase you, and will chase you eventually. Outrun them for long enough and you'll be fine.");
+            Console.WriteLine("SIN: Beware; the gods are watching as you descend down this cursed inferno. Keep an eye on what you eat, on what you do, everything.");
+        }
+        Console.WriteLine("Great. Let's move you in position. Before you begin your run, I'll give you with an item that might help you out.");
+        Console.WriteLine("Here, have this.");
+
     }
 }
