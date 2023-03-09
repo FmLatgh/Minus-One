@@ -145,20 +145,7 @@
         Enemy Despair = new Enemy("Despair", false, true, true, false, 0, 0, 3);
 
         //Item Database Management
-        /*Explaination
-         * 1 = Inflicts stun when nearby
-         * 2 = Deters Enemies
-         * 3 = Grants Extra Steps
-         * 4 = Changes this item in an item of choice
-         * 5 = Changes this item into a random item
-         * 6 = Instantly Kills you
-         * 7 = "Confess", purges Guilt
-         * 8 = Purges HOPELESS
-         * 9 = Summons An Sin of Choice
-         * 10 = Summons a Random Sin
-         * 11 = Exchanges your loadout for new items
-         * 12 = (Grants) Curses you with zodiac
-         */
+
 
         //1 Inflicts stun when nearby
         Item Camera = new Item("Camera", 1, 1, 3, 0, false);
@@ -199,22 +186,22 @@
         //10 Summons random sin
         Item ThornCrown = new Item("Thorn Crown", 2, 10, 5, 0, false);
         
-        //11 Swaps up your entire inv
+        //11 Swaps up your entire inventory
         Item CSlots = new Item("Crazy Slots", 5, 11, 1, 0, false);
         
         //12 Gives you zodiac, idk why you'd want this
         Item DollarSign = new Item("Dollar Sign", 5, 12, 1, 0, false);
         Item Constellation = new Item("Constellation", 5, 12, 1, 0, false);
 
-        //Variables that handle items and enemy generation
-        int itemSpawnChance = 4; //This will be 1/4, so 8 is 1/8 (12.5%)
-        int itemRarity = 1; //From a chance of 1 to 5, where 1 is common and 5 is an one-of-a-kind
-        int monsterSpawnChance = 8;
-        int monsterRarity = 1; //1 being lowest, 7 being rarest
-        bool sinModifier = false; //Automatically locks the value to 7 and assigns sinChooser to current floor
+        //Variables that define Exotic Enemies Values
         int sinChooser = 0; //Read below
         int despairModifier = 0; //Goes up every time an monster is encountered can only be lowered while meeting the "Roland" entity, which will not kill you when despair is above 40
-        
+        int chaseLength = 25; //Sets a step goal for the enemy, will stop walking afterwards, will scale with difficulty, rarity n'd such
+        int enemySteps = 0; //Sets step amount
+
+        //Variables that define Items and littering
+        int littering = 20; // is an 1/definable % chance to spawn an item on a step
+
         /*Sinchooser explaination:
          * 0 = error (Activates when the player encounters an error, chosen by default)
          * 1 = gluttony (Activates when a player has used more than 10 items during the current floor)
@@ -232,18 +219,34 @@
         
 
         //Variables that define the element of luck while playing
-        Random step = new Random();
-        int stepfinal = 0; //Defines how far a player will walk, with the amount of chances to be greeted by an entity
+        Random step = new Random(); //Player step
+        Random eStep = new Random(); //Enemy step
+        Random itemTrigger = new Random(); //50,50 for items like GUN
+        Random projHitcheck = new Random(); //Checks if projectile HAS hit, becomes higher with range
+        Random itemSpawn = new Random(); //Checks 
+        Random itemRare = new Random(); //Checks in rarity categories when finding item on the ground
+
+
+
 
         //Variables that declare player status, such as stunned
-        bool dead = false;
+        bool dead = false; //Checks for gameover
         bool start = false;
+        bool spotted = false;
+
         int itemsUsed = 0;
         int stepsTaken = 0;
         int monstersEncountered = 0;
 
-        //Variables that describe what an player has for items
-        List<string> inventory = new List<string>(); //Inventory
+        int stepspeed = 0; //Defines amount of steps taken, also checks how much times an item will be checked, an enemy will spot
+        int mood = 0; //Mood lowers despair, and will give bonus rewards when interacting with martin. will also serve as a step multiplier
+        int stepfinal = 0; //Sum of modifiers + Base
+
+        //Inventory Placeholder
+        List<Item> Inventory = new List<Item>();
+
+        //Stepbonus Placeholder
+        List<int> stepBonus = new List<int>();
         
         //Admin Client secret (USE AT YOUR OWN RISK)
         bool admintoggle = false; //To declare when the debug is activated
@@ -263,6 +266,9 @@
          * dip (value) (value), adds the first to the second
          * rip (value) (value), removes value the second
          * 
+         * PLAYER
+         * ruina (ailmentInt), gives said ailment int
+         * libraryofruina, shows ailmentInts
          * 
          * 
          */
