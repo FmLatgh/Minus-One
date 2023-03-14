@@ -154,6 +154,7 @@
 
         //3 Grants extra steps
         Item Shoes = new Item("Shoes", 2, 3, 5, 0, false);
+        Item Jetpack = new Item("Jetpack", 4, 3, 10, 0, false);
         
         //4 Turns into item of choice
         Item EightBall = new Item("8-Ball", 5, 4, 1, 0, false);
@@ -191,21 +192,47 @@
         Item Constellation = new Item("Constellation", 5, 12, 1, 0, false);
 
         //Item arrays dependant on rarity
+        //SERVES AT LOOTTABLE, MODIFY AT YOUR OWN VOLITION!
         
         //Common
         var Common = new List<Item>();
+        Common.Add(Camera);
+        Common.Add(Flash);
+        Common.Add(SmokeBomb);
 
         //Uncommon
         var Uncommon = new List<Item>();
+        Uncommon.Add(Shoes);
+        Uncommon.Add(sGift);
+        Uncommon.Add(ThornCrown);
 
         //Rare
         var Rare = new List<Item>();
+        Rare.Add(Fart);
+        Rare.Add(mGift);
+        Rare.Add(Gun);
+        Rare.Add(Contract);
+        Rare.Add(VileDeed);
 
         //Epic
         var Epic = new List<Item>();
+        Epic.Add(Jetpack);
+        Epic.Add(lGift);
+        Epic.Add(Knife);
+        Epic.Add(OneSin);
+        Epic.Add(HOPE);
+        Epic.Add(HELP);
+
 
         //One of a Kind
-        var OneofAKind = new List<Item>();  
+        var Exotic = new List<Item>();  
+        Exotic.Add(EightBall);
+        Exotic.Add(BlackBox);
+        Exotic.Add(JCross);
+        Exotic.Add(CSlots);
+        Exotic.Add(DollarSign);
+        Exotic.Add(Constellation);
+
 
         //Variables that define Exotic Enemies Values
         int sinChooser = 0; //Read below
