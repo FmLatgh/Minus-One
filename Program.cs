@@ -155,7 +155,9 @@
         //3 Grants extra steps
         Item Shoes = new Item("Shoes", 2, 3, 5, 0, false);
         Item Jetpack = new Item("Jetpack", 4, 3, 10, 0, false);
-        
+        Item Glognut = new Item("Glognut", 5, 3, 1000, 0, false);
+        Item HeartGlognut = new Item("Heart Glognut", 6, 3, 10000, 0, false);
+
         //4 Turns into item of choice
         Item EightBall = new Item("8-Ball", 5, 4, 1, 0, false);
         Item BlackBox = new Item("---------", 5, 4, 1, 0, false); //Has a 30% Chance to become a GUN
