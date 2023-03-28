@@ -118,15 +118,16 @@
          */
 
         //Enemy Database Management
-        Enemy Error = new Enemy("Error", true, true, true, true, 6, 100, 10);
-        Enemy Rusanic = new Enemy("Rusanic", false, true, true, true, 7, 7, 4);
-        Enemy CENSORED = new Enemy("[CENSORED]", false, false, true, true, 8, 3, 3); 
+        Enemy Error = new Enemy("Error", true, true, true, true, 6, 100, 10); //Spawns when error
+        Enemy Rusanic = new Enemy("Rusanic", false, true, true, true, 7, 7, 4); //Spawns at Zodiac :troll:
+        Enemy CENSORED = new Enemy("[CENSORED]", false, false, true, true, 8, 3, 3);  //Only spawns at certain (secret) conditions
         Enemy Walker = new Enemy("Walker", false, false, true, true, 1, 3, 2);
         Enemy Gogh = new Enemy("Gogh", false, false, true, false, 0, 0, 3); //Special Enemy that kills if you have a GUN
-        Enemy Seer = new Enemy("Seer", false, false, true, false, 0, 0, 3);
+        Enemy Seer = new Enemy("Seer", false, false, true, false, 0, 0, 3); 
         Enemy Blight = new Enemy("Blight", false, true, true, true, 2, 1, 2);
         Enemy Clown = new Enemy("Clown", false, false, true, false, 0, 0, 4);
-        Enemy WN = new Enemy("White Night", false, true, true, true, 9, 2, 1);
+        Enemy WN = new Enemy("White Night", false, true, true, true, 9, 2, 1); //Spawns under special conditions
+        Enemy Enphoso = new Enemy("Enphoso", false, true, true, true, 8, 6, 3); //Spawns under special conditions
         Enemy Roland = new Enemy("Roland", true, true, false, false, 0, 0, 0); //NPC, Sets Despair back to 0 if above 40
         Enemy Martin = new Enemy("Martin", true, true, false, false, 0, 0, 0); //NPC, offers compassion, or anything else, for a price...
         Enemy Binah = new Enemy("Binah", true, true, false, false, 0, 0, 0); //NPC, offers utillity items such as camera's
@@ -155,8 +156,8 @@
         //3 Grants extra steps
         Item Shoes = new Item("Shoes", 2, 3, 5, 0, false);
         Item Jetpack = new Item("Jetpack", 4, 3, 10, 0, false);
-        Item Glognut = new Item("Glognut", 5, 3, 1000, 0, false);
-        Item HeartGlognut = new Item("Heart Glognut", 6, 3, 10000, 0, false);
+        Item Glognut = new Item("Glognut", 5, 3, 1000, 0, false); //Has a 25% chance to spawn enphoso
+        Item HeartGlognut = new Item("Heart Glognut", 6, 3, 10000, 0, false); //mwa mwa mwa mwa mwa
 
         //4 Turns into item of choice
         Item EightBall = new Item("8-Ball", 5, 4, 1, 0, false);
@@ -191,7 +192,7 @@
         
         //12 Gives you zodiac, idk why you'd want this
         Item DollarSign = new Item("Dollar Sign", 5, 12, 1, 0, false);
-        Item Constellation = new Item("Constellation", 5, 12, 1, 0, false);
+        Item Constellation = new Item("Constellation", 5, 12, 1, 0, false); //Reskin
 
         //Item arrays dependant on rarity
         //SERVES AT LOOTTABLE, MODIFY AT YOUR OWN VOLITION!
@@ -234,7 +235,11 @@
         Exotic.Add(CSlots);
         Exotic.Add(DollarSign);
         Exotic.Add(Constellation);
+        Exotic.Add(Glognut);
 
+        //R.A.M.
+        var RAMitems = new List<Item>();
+        RAMitems.Add(HeartGlognut);
 
         //Variables that define Exotic Enemies Values
         int sinChooser = 0; //Read below
