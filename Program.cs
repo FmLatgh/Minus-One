@@ -239,7 +239,7 @@
 
         //R.A.M.
         var RAMitems = new List<Item>();
-        RAMitems.Add(HeartGlognut);
+        RAMitems.Add(HeartGlognut); 
 
         //Variables that define Exotic Enemies Values
         int sinChooser = 0; //Read below
@@ -265,7 +265,6 @@
          * Error, wrath, sloth, pride, despair, greed, gluttony, lust
          * Whenever 2 of the sin entities conflict, forces the list first
          */
-        
 
         //Variables that define the element of luck while playing
         Random step = new Random(); //Player step
