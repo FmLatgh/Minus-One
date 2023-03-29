@@ -326,7 +326,35 @@
         {
             for (int i = 0; i < rareCycles; i++)
             {
+                int rarity;
 
+                double probability = pickRare.NextDouble();
+                if (probability < 0.9)
+                {
+                    rarity = 1;
+                }
+                else if (probability < 0.9 + 0.4)
+                {
+                    rarity = 2;
+                }
+                else if (probability < 0.9 + 0.4 + 0.25)
+                {
+                    rarity = 3;
+                }
+                else if (probability < 0.9 + 0.4 + 0.25 + 0.05)
+                {
+                    rarity = 4;
+                }
+                else if (probability < 0.9 + 0.4 + 0.25 + 0.05 + 0.01)
+                {
+                    rarity = 5;
+                }
+                else
+                {
+                    rarity = 6;
+                }
+
+                return rarity;
             }
         }
 
