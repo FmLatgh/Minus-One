@@ -148,6 +148,7 @@
         //1 Inflicts stun when nearby
         Item Camera = new Item("Camera", 1, 1, 3, 0, false);
         Item Flash = new Item("Flashbang", 1, 1, 3, 0, false);
+        Item Debug = new Item("Debug", 6, 1, 1, 1, false); //TO BE USED WHILE TESTING CODE!!!
         
         //2 Deters enemies
         Item SmokeBomb = new Item("Smoke Bomb", 1, 2, 1, 0, false);
@@ -239,7 +240,8 @@
 
         //R.A.M.
         var RAMitems = new List<Item>();
-        RAMitems.Add(HeartGlognut); 
+        RAMitems.Add(HeartGlognut);
+        RAMitems.Add(Debug);
 
         //Variables that define Exotic Enemies Values
         int sinChooser = 0; //Read below
@@ -249,7 +251,6 @@
 
         //Variables that define Items and littering
         int littering = 20; // is an 1/definable % chance to spawn an item on a step
-        int rareCycles = 5;
 
         /*Sinchooser explaination:
          * 0 = error (Activates when the player encounters an error, chosen by default)
@@ -273,7 +274,7 @@
         Random projHitcheck = new Random(); //Checks if projectile HAS hit, becomes higher with range
         Random itemSpawn = new Random(); //Checks if an item spawns in step range
         Random pickRare = new Random(); //Select Rarity Category
-        Random itemRare = new Random(); //Checks in rarity categories when finding item on the ground
+        Random itemRandomizer = new Random(); //Checks in rarity categories when finding item on the ground
         
 
         //Variables that declare player status, such as stunned
@@ -321,42 +322,46 @@
          *
          */
 
-        //Loottable
-        void getItem(int rareCycles)
+        //Loottable picker
+        Item lootChoice()
         {
-            for (int i = 0; i < rareCycles; i++)
+            Item chosenitem = Debug;
+            int chosenRarity = pickRare.Next(1, 101); //Chooses an number from 1 to 100, follow rarity below
+            /*
+            65 and above - Common
+            between 45 and 65 - Uncommon
+            between 25 and 44 - Rare
+            between 10 and 24 - Epic
+            between 3 and 9 - One of a kind
+            between 1 and 2 - RAM item
+            */
+
+            if (chosenRarity > 65) //Common
             {
-                int rarity;
 
-                double probability = pickRare.NextDouble();
-                if (probability < 0.9)
-                {
-                    rarity = 1;
-                }
-                else if (probability < 0.9 + 0.4)
-                {
-                    rarity = 2;
-                }
-                else if (probability < 0.9 + 0.4 + 0.25)
-                {
-                    rarity = 3;
-                }
-                else if (probability < 0.9 + 0.4 + 0.25 + 0.05)
-                {
-                    rarity = 4;
-                }
-                else if (probability < 0.9 + 0.4 + 0.25 + 0.05 + 0.01)
-                {
-                    rarity = 5;
-                }
-                else
-                {
-                    rarity = 6;
-                }
+            } else if (chosenRarity < 65 && chosenRarity >= 45) //Uncommon
+            {
 
-                return rarity;
+            } else if (chosenRarity < 45 && chosenRarity >= 25) //Rare
+            {
+
+            } else if (chosenRarity < 25 && chosenRarity >= 10) //Epic
+            {
+
+            } else if (chosenRarity < 10 && chosenRarity >= 3) //One of a kind
+            {
+
+            } else if (chosenRarity < 3) //RAM item
+            {
+
             }
+            return chosenitem;
+            
+
+
         }
+
+
 
         //Menu (FINALLY)
         Console.WriteLine("Minus One: Descent To Madness.");
@@ -373,16 +378,22 @@
         if (answer == "Y")
         {
             Console.WriteLine("The premise is easy.");
+            Console.ReadKey();
             Console.WriteLine("Your job is to get as deep as possible");
+            Console.ReadKey();
             Console.WriteLine("You are not alone. There are monsters out there. Learn to survive and you will be fine.");
+            Console.ReadKey();
             Console.WriteLine("There is no end. Don't expect there to be one exept death.");
+            Console.ReadKey();
             Console.WriteLine("The Game will become more difficult the longer you are in the run.");
             Console.WriteLine("===========================================================================");
+            Console.ReadKey();
             Console.WriteLine("The Gameplay can be simplified to two actions; Items and Stepping.");
             Console.WriteLine("STEPPING: Stepping is used to advance forward and complete your button/steps assignment.");
             Console.WriteLine("ITEMS: You can find various ITEMS while STEPPING, which you can then use to advance your next STEP.");
             Console.WriteLine("CHASE: Entities can chase you, and will chase you eventually. Outrun them for long enough and you'll be fine.");
             Console.WriteLine("SIN: Beware; the gods are watching as you descend down this cursed inferno. Keep an eye on what you eat, on what you do, everything.");
+            Console.ReadKey();
         }
         Console.WriteLine("Great. Let's move you in position. Before you begin your run, I'll give you with an item that might help you out.");
         Console.WriteLine("Here, have this.");
