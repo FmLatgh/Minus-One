@@ -318,7 +318,7 @@
          * 
          * PLAYER
          * ruina (ailmentInt), gives said ailment int
-         * libraryofruina, shows ailmentInts
+         * libraryofruina, shows ailmentInt
          *
          */
 
@@ -326,6 +326,7 @@
         Item lootChoice()
         {
             Item chosenitem = Debug;
+            int rarityC = 0;
             int chosenRarity = pickRare.Next(1, 101); //Chooses an number from 1 to 100, follow rarity below
             /*
             65 and above - Common
@@ -338,22 +339,22 @@
 
             if (chosenRarity > 65) //Common
             {
-
+                rarityC = 1;
             } else if (chosenRarity < 65 && chosenRarity >= 45) //Uncommon
             {
-
+                rarityC = 2;
             } else if (chosenRarity < 45 && chosenRarity >= 25) //Rare
             {
-
+                rarityC = 3;
             } else if (chosenRarity < 25 && chosenRarity >= 10) //Epic
             {
-
+                rarityC = 4;    
             } else if (chosenRarity < 10 && chosenRarity >= 3) //One of a kind
             {
-
+                rarityC = 5;
             } else if (chosenRarity < 3) //RAM item
             {
-
+                rarityC = 6;
             }
             return chosenitem;
             
@@ -397,6 +398,7 @@
         }
         Console.WriteLine("Great. Let's move you in position. Before you begin your run, I'll give you with an item that might help you out.");
         Console.WriteLine("Here, have this.");
+         
 
     }
 }
