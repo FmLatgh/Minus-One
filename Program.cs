@@ -30,7 +30,7 @@
          *  9 Applies most of above :)
          */
         public int projRange = 3; // 3 by default
-        public int speed = 1; //1 lowest, 3 highest (translates to steps
+        public int speed = 1; //1 lowest, 3 highest (translates to steps)
         public Enemy(string name, bool stunned, bool stunprod, bool isLethal, bool shootsProjectiles, int projDebuff, int projRange, int speed)
         {
             this.name = name;
@@ -132,6 +132,7 @@
         Enemy Martin = new Enemy("Martin", true, true, false, false, 0, 0, 0); //NPC, offers compassion, or anything else, for a price...
         Enemy Binah = new Enemy("Binah", true, true, false, false, 0, 0, 0); //NPC, offers utillity items such as camera's
         Enemy Bew = new Enemy("Bew", true, true, false, false, 0, 0, 0); //NPC, offers food items on the way
+        Enemy Sinister = new Enemy("Sinister", true, true, false, false, 0, 0, 0); //NPC, offers friendship and various quotes from the real sinister
 
         //Sin enemy Database
         Enemy Greed = new Enemy("Greed", false, false, true, true, 4, 5, 4);
@@ -196,7 +197,7 @@
         Item Constellation = new Item("Constellation", 5, 12, 1, 0, false); //Reskin
 
         //Item arrays dependant on rarity
-        //SERVES AT LOOTTABLE, MODIFY AT YOUR OWN VOLITION!
+        //SERVES AS LOOTTABLE, MODIFY AT YOUR OWN RISK!
         
         //Common
         var Common = new List<Item>();
@@ -274,7 +275,7 @@
         Random projHitcheck = new Random(); //Checks if projectile HAS hit, becomes higher with range
         Random itemSpawn = new Random(); //Checks if an item spawns in step range
         Random pickRare = new Random(); //Select Rarity Category
-        Random itemRandomizer = new Random(); //Checks in rarity categories when finding item on the ground
+        Random indexPick = new Random(); //Checks in rarity lists when lootPick() is called
         
 
         //Variables that declare player status, such as stunned
@@ -323,10 +324,11 @@
          */
 
         //Loottable picker
-        Item lootChoice()
+        Item lootPick()
         {
             Item chosenitem = Debug;
-            int rarityC = 0;
+            int rarityC = 0; //rarity confirmer and debugging tool
+            int index = 0; //After the list is picked, checks for random item
             int chosenRarity = pickRare.Next(1, 101); //Chooses an number from 1 to 100, follow rarity below
             /*
             65 and above - Common
@@ -337,6 +339,8 @@
             between 1 and 2 - RAM item
             */
 
+
+            //Picks the actual rarity when calling the function
             if (chosenRarity > 65) //Common
             {
                 rarityC = 1;
@@ -356,12 +360,39 @@
             {
                 rarityC = 6;
             }
+
+
+            //Checks out of given rarity inside an list
+            if (rarityC == 1)
+            {
+                index = indexPick.Next(0, (Common.Count + 1));
+                chosenitem = Common[index];
+            } else if (rarityC == 2)
+            {
+                index = indexPick.Next(0, (Uncommon.Count + 1));
+                chosenitem = Uncommon[index];
+            } else if (rarityC == 3)
+            {
+                index = indexPick.Next(0, (Rare.Count + 1));
+                chosenitem = Rare[index];
+            } else if (rarityC == 4) 
+            {
+                index = indexPick.Next(0, (Epic.Count + 1));
+                chosenitem = Epic[index];
+            } else if (rarityC == 5)
+            {
+                index = indexPick.Next(0, (Exotic.Count + 1));
+                chosenitem = Exotic[index];
+            } else if (rarityC == 6)
+            {
+                index = indexPick.Next(0, (RAMitems.Count + 1));
+                chosenitem = RAMitems[index];
+            }
+
+            //Console.WriteLine("DEBUG: RARITY {0}, ITEMNAME {1}, LUCK {2}", chosenitem.rarity, chosenitem.name, chosenRarity);
+            Console.WriteLine("You found an {0}!", chosenitem.name);
             return chosenitem;
-            
-
-
         }
-
 
 
         //Menu (FINALLY)
@@ -398,7 +429,7 @@
         }
         Console.WriteLine("Great. Let's move you in position. Before you begin your run, I'll give you with an item that might help you out.");
         Console.WriteLine("Here, have this.");
-         
+        Inventory.Add(lootPick());
 
     }
 }
