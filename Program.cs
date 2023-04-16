@@ -1,4 +1,6 @@
-﻿internal class program
+﻿using System.Runtime.CompilerServices;
+
+internal class program
 {
     public class Enemy
     {
@@ -88,8 +90,44 @@
         //Variables that explain during, after and before round information
         string spottedBy = "Error";
         string killedBy = "Error";
+        string displayDif = "Broken V";
         int currentFloor = 0;
         int currentDif = 1;
+
+        //Names the difficulty accordingly
+        if (currentDif == 1) { displayDif = "Easy"; }
+        if (currentDif == 2) { displayDif = "Medium"; }
+        if (currentDif == 3) { displayDif = "Hard"; }
+        if (currentDif == 4) { displayDif = "Insane"; }
+        if (currentDif == 5) { displayDif = "Unreal"; }
+        if (currentDif == 6) { displayDif = "Impossible"; }
+        if (currentDif == 7) { displayDif = "Nil"; }
+        if (currentDif == 8) { displayDif = "Artificial I"; }
+        if (currentDif == 9) { displayDif = "Artificial II"; }
+        if (currentDif == 10) { displayDif = "Artificial III"; }
+        if (currentDif == 11) { displayDif = "Artificial IV"; }
+        if (currentDif == 12) { displayDif = "Artificial V"; }
+        if (currentDif == 13) { displayDif = "Artificial VI"; }
+        if (currentDif == 14) { displayDif = "Artificial VII"; }
+        if (currentDif == 15) { displayDif = "Broken I"; }
+        if (currentDif == 16) { displayDif = "Broken II"; }
+        if (currentDif == 17) { displayDif = "Broken III"; }
+        if (currentDif == 18) { displayDif = "Broken IV"; }
+        if (currentDif == 19) { displayDif = "Broken V"; }
+        if (currentDif >= 20) { displayDif = "Solstice"; }
+
+        //Variables that define how long an floor is and how hard it currently is to do stuff
+        int buttonGoal = 0;
+        int stepGoal;
+
+        int currentSteps = 0;
+        int currentButtons = 0;
+
+        int enemyRarityMin;
+
+        bool wrathOnly = false; //On Nil
+        bool errorOnly = false; //On broken
+        bool artificialErrorWrathCombo = false; //On artificial
 
         //Variables that select Modifiers
         bool relapse = false;
@@ -110,7 +148,7 @@
          * 7 - Nil - The point where items are drained, and only spawns Error or Wrath. Occasionally spawns Rusanic
          * 
          * With the Relapse modifier, rapidly changes through the difficulties 1 till 5
-         * With the Eclipse modifier, caps it from 3 upwards and spawns more enemies (Tougher Mode)
+         * With the Eclipse modifier, caps difficulty from 3 upwards and spawns more enemies (Tougher Mode)
          * With the Blackout modifier, hides most information from you, as well as when an enemy is spotting you. (Blind Mode)
          * With the B&D (blind and deaf) modifier, hides ALL information from you, exept for when an floor is completed. (DO NOT TRY THIS AT HOME)
          * With the Survivor modifier, disables any items at the start, disables Sin items, disables most stuff. Leaves you with unfiltered experience (Legacy Mode)
@@ -150,7 +188,6 @@
         Item Camera = new Item("Camera", 1, 1, 3, 0, false);
         Item Flash = new Item("Flashbang", 1, 1, 3, 0, false);
         Item Debug = new Item("Debug", 6, 1, 1, 1, false); //TO BE USED WHILE TESTING CODE!!!
-        
         //2 Deters enemies
         Item SmokeBomb = new Item("Smoke Bomb", 1, 2, 1, 0, false);
         Item Fart = new Item("Fart", 3, 2, 5, 0, false); //Farts last longer and are more effective
@@ -283,13 +320,48 @@
         bool start = false;
         bool spotted = false;
 
+        //Variables that declare the current debuffs and existing debuffs off the player
+        List<string> DebuffLibrary = new List<string>(); //Defines debuff library
+        List<string> PlayerDebuffs = new List<string>(); //Defines current player debuffs
+
+        //Debuff Library
+        /* Explaination:
+         * 0 = None, by default
+         * 1 = Slow, removes 1 or 2 steps from total, scales with amount of steps took
+         * 2 = Sludge, Removes 4 or 6 steps from total, scales with amount of steps took
+         * 3 = Guilt, is inflicted whenever an sin is "committed", changes with each sin specifically
+         * 4 = Enchanted, Removes all steps, +2 steps for entity in question, only inflicted by greed, lust, eyebird, stare
+         * 5 = Loom, Removes half of steps if spotted = true
+         * 6 = H.O.P.E.L.E.S.S, High Orientation Paralysis Exclusively Leaked Encountering Secret Sepiroth, causes extreme modifiers to be applied.
+         * 7 = Zodiac, I don’t give a fuck what you rappin you been a fake,
+         *  I’m everything that they ain’t,
+         *  And can’t be, And won’t be,
+         *  Wanna see me fall,
+         *  I can’t go, i won’t leave
+
+         *  12 can’t really stop shit,
+         *  so I’m still pushin like a mosh pit
+         *  
+         *  8 RENDERS YOU COMPLETELY HOPELESS, -5 Steps (scales up), 
+         *  9 Applies most of above :)
+         */
+
+        DebuffLibrary.Add("Slow");
+        DebuffLibrary.Add("Sludge");
+        DebuffLibrary.Add("Guilt");
+        DebuffLibrary.Add("Enchanted");
+        DebuffLibrary.Add("Loom");
+        DebuffLibrary.Add("EmotionFilter"); //H.O.P.E.L.E.S.S.
+        DebuffLibrary.Add("Zodiac");
+        DebuffLibrary.Add("HOPELESS");
+
         int itemsUsed = 0;
         int stepsTaken = 0;
         int monstersEncountered = 0;
 
-        String name;
+        String name; //Player name
 
-        int stepspeed = 0; //Defines amount of steps taken, also checks how much times an item will be checked, an enemy will spot
+        int stepspeed = 3; //Defines amount of steps taken, also checks how much times an item will be able to be found, an enemy will spot
         int mood = 0; //Mood lowers despair, and will give bonus rewards when interacting with martin. will also serve as a step multiplier
         int stepfinal = 0; //Sum of modifiers + Base
 
@@ -322,14 +394,29 @@
          * libraryofruina, shows ailmentInt
          *
          */
+        
+        //
+        Item itemUse(string name)
+        {
+            foreach (Item Useable in Inventory)
+            {
+                if (Useable.wornout == false)
+                {
+
+                }
+            }
+
+            Item useItem = Debug;
+            return useItem;
+        }
 
         //Loottable picker
-        Item lootPick()
+        Item lootPick(int minRarity)
         {
             Item chosenitem = Debug;
             int rarityC = 0; //rarity confirmer and debugging tool
             int index = 0; //After the list is picked, checks for random item
-            int chosenRarity = pickRare.Next(1, 101); //Chooses an number from 1 to 100, follow rarity below
+            int chosenRarity = pickRare.Next(1, minRarity); //Chooses an number from minRarity to 100, follow rarity below
             /*
             65 and above - Common
             between 45 and 65 - Uncommon
@@ -365,27 +452,27 @@
             //Checks out of given rarity inside an list
             if (rarityC == 1)
             {
-                index = indexPick.Next(0, (Common.Count + 1));
+                index = indexPick.Next(0, Common.Count);
                 chosenitem = Common[index];
             } else if (rarityC == 2)
             {
-                index = indexPick.Next(0, (Uncommon.Count + 1));
+                index = indexPick.Next(0, Uncommon.Count);
                 chosenitem = Uncommon[index];
             } else if (rarityC == 3)
             {
-                index = indexPick.Next(0, (Rare.Count + 1));
+                index = indexPick.Next(0, Rare.Count);
                 chosenitem = Rare[index];
             } else if (rarityC == 4) 
             {
-                index = indexPick.Next(0, (Epic.Count + 1));
+                index = indexPick.Next(0, Epic.Count);
                 chosenitem = Epic[index];
             } else if (rarityC == 5)
             {
-                index = indexPick.Next(0, (Exotic.Count + 1));
+                index = indexPick.Next(0, Exotic.Count);
                 chosenitem = Exotic[index];
             } else if (rarityC == 6)
             {
-                index = indexPick.Next(0, (RAMitems.Count + 1));
+                index = indexPick.Next(0, RAMitems.Count);
                 chosenitem = RAMitems[index];
             }
 
@@ -429,7 +516,113 @@
         }
         Console.WriteLine("Great. Let's move you in position. Before you begin your run, I'll give you with an item that might help you out.");
         Console.WriteLine("Here, have this.");
-        Inventory.Add(lootPick());
+        Inventory.Add(lootPick(101));
 
+        do
+        {
+            //PRE FLOOR LAYER
+
+            Console.WriteLine("Now moving to... Floor {0}.", currentFloor);
+            Console.WriteLine("Current Difficulty... {0}.", displayDif);
+            Console.ReadKey();
+            /*
+             * Now comes the hard part
+             * Making actual formulas to keep the game balanced, but also harder over time
+             * 
+             * I already implemented an button goal that starts from 3.
+             * 
+             * Here's the chart again
+             * 
+             * 1 - Easy - Refuses to spawn any rarity 4 or highers, exept for sin requirements.
+             * 2 - Medium - Refuses to spawn the rarest of enemies, will spawn tougher enemeies, and will make greater rewards, more enemies, and more button goals.
+             * 3 - Hard - Allows spawning of all sorts of enemies, with even more button spawns. Powers some of the sins up.
+             * 4 - Insane - Caps spawning to rarity 3 or higher, making them more common. Like usual, more buttons, more rewards, more danger.
+             * 5 - Unreal - Caps spawning to 5 or higher, making them more common. Spawns more buttons, which can cap. Pernamently toggles multiple sin spawning.
+             * 6 - Impossible - Caps spawning sins only, turning the game into a nightmare. Is meant to stop the player from continuing.
+             * 7 - Nil - The point where items are drained, and only spawns Wrath. Occasionally spawns Rusanic.
+             * 8/14 - Artificial(I/VII) - The point where the game itsself starts to break and will spawn Error or Wrath. Occasionally spawns Rusanic.
+             * 15/19 - Broken(I/V) - The point where the game is unplayable. If somehow this difficulty is achieved, it will spawn only Error.
+             * 20+ - Solstice - If SOMEHOW you are to come here, the game will become unplayable. This is only used for development, and should in no way be continued. Upon continuing, will just freeze you in your steps and is only achieved with the debug menu.
+             */
+
+            stepGoal = 30 + (3 * currentDif);
+            if (currentDif >= 3) //If the difficulty is "Hard" or above...
+            {
+                buttonGoal = 1 + (2 * currentDif); //Sets button requirement by 1 + (2 * i), which is as base "6".
+            }
+            else if (currentDif >= 4)
+            {
+                enemyRarityMin = 3;
+            }
+            if (currentDif >= 5)
+            {
+                enemyRarityMin = 5;
+            }
+            if (currentDif >= 6)
+            {
+                enemyRarityMin = 7;
+            }
+            if (currentDif >= 7)
+            {
+                wrathOnly = true;
+            }
+            if (currentDif >= 8 && currentDif <= 14)
+            {
+                artificialErrorWrathCombo = true;
+            }
+            if (currentDif >= 15 && currentDif <= 19)
+            {
+                errorOnly = true;
+            }
+            if (currentDif >= 20)
+            {
+                buttonGoal = 50 + (currentDif * 10);
+                Console.WriteLine("IF YOU HAVE GOTTEN THIS FAR, PLEASE END YOUR RUN. THIS IS THE FINAL DIFFICULTY, AND NOTHING IS BEHIND THIS. THIS DIFFICULTY IS MEANT TO STOP YOU. CONGRATULATIONS ON COMING THIS FAR.");
+            }
+
+            //FLOOR LAYER
+            do
+            {
+                Console.WriteLine("Type what you will do.");
+                Console.WriteLine("Current Commands: Inventory, Step, Use, Status");
+                string answerGet;
+                answerGet = Console.ReadLine();
+                switch (answerGet)
+                {
+                    case "Inventory":
+                        Console.WriteLine("Your have {0} item(s).", Inventory.Count);
+                        foreach (Item Item in Inventory)
+                        {
+                            Console.WriteLine(Item.name);
+                        }
+                        break;
+                    case "Step":
+
+                        currentSteps = currentSteps + stepfinal;
+                        stepsTaken = stepsTaken + stepfinal;
+
+                        Console.WriteLine("Walked {0} steps.", stepfinal);
+                        break;
+                    case "Use":
+                        Console.WriteLine("Use which item? Type \"cancel\" to cancel.");
+                        foreach (Item Item in Inventory)
+                        {
+                            Console.WriteLine(Item.name);
+                        }
+
+                        string useInput = "None";
+                        useInput = Console.ReadLine();
+                        if (Inventory.Any(item => item.name.Equals(useInput, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            
+                        }
+                        break;
+                }
+            } while (currentSteps < stepGoal && currentButtons < buttonGoal);
+        } while (!dead);
+
+        //Gameover sequence
+        Console.WriteLine("You died!");
+        Console.WriteLine("You survived: {0} floors and were killed by: {1}", (currentFloor - 1), killedBy);
     }
 }
