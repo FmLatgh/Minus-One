@@ -614,7 +614,10 @@ internal class program
                         useInput = Console.ReadLine();
                         if (Inventory.Any(item => item.name.Equals(useInput, StringComparison.OrdinalIgnoreCase)))
                         {
-                            
+                            Console.WriteLine("DEBUG: Used {0}!", useInput);
+                        } else
+                        {
+                            Console.WriteLine("That's not an valid item!");
                         }
                         break;
                 }
