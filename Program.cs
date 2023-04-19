@@ -1,4 +1,7 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics.Metrics;
+using System.Runtime.CompilerServices;
+using static program;
+using System.Threading.Channels;
 
 internal class program
 {
@@ -90,7 +93,7 @@ internal class program
         //Variables that explain during, after and before round information
         string spottedBy = "Error";
         string killedBy = "Error";
-        string displayDif = "Broken V";
+        string displayDif = "Solstice";
         int currentFloor = 0;
         int currentDif = 1;
 
@@ -146,6 +149,7 @@ internal class program
          * 5 - Unreal - Caps spawning to 5 or higher, making them more common. Spawns more buttons, which can cap. Pernamently toggles multiple sin spawning.
          * 6 - Impossible - Caps spawning sins only, turning the game into a nightmare. Forces atleast 50 buttons each round, and is meant to stop the player from continuing.
          * 7 - Nil - The point where items are drained, and only spawns Error or Wrath. Occasionally spawns Rusanic
+         * (Better chart at the gameplay loop)
          * 
          * With the Relapse modifier, rapidly changes through the difficulties 1 till 5
          * With the Eclipse modifier, caps difficulty from 3 upwards and spawns more enemies (Tougher Mode)
@@ -395,21 +399,6 @@ internal class program
          *
          */
         
-        //
-        Item itemUse(string name)
-        {
-            foreach (Item Useable in Inventory)
-            {
-                if (Useable.wornout == false)
-                {
-
-                }
-            }
-
-            Item useItem = Debug;
-            return useItem;
-        }
-
         //Loottable picker
         Item lootPick(int minRarity)
         {
@@ -481,6 +470,130 @@ internal class program
             return chosenitem;
         }
 
+        void ItemUseage(Item selectedItemString)
+        {
+            if (selectedItemString.wornout)
+            {
+                Console.WriteLine("This item is wornout! You threw it away.");
+                Inventory.Remove(selectedItemString);
+
+            } else
+            {
+                Console.WriteLine("You used {0}", selectedItemString.name);
+                Inventory.Remove(selectedItemString);
+
+                /*I will now post the database to make sure I know what effects to apply
+                *1 = Inflicts stun when nearby
+                * 2 = Deters Enemies
+                * 3 = Grants Extra Steps
+                *4 = Item of choice
+                *5 = Random items
+                *6 = Instantly Kills you
+                *7 = "Confess", purges Guilt
+                *8 = Purges HOPELESS
+                * 9 = Summons An Sin of Choice
+                *10 = Summons a Random Sin
+                * 11 = Exchanges your loadout for new items
+                * 12 = Changes this item in an item of choice
+                */
+
+                switch (selectedItemString.itemUse)
+                {
+                    case 1:
+                        //Checks which item this is (if needed)
+
+                        //Check for distance player from enemy in chase
+
+                        //apply stun
+
+                        //Apply usedint
+                        break;
+                    case 2:
+                        //Checks which item this is (if needed)
+
+                        //Set chance of spawning to X for X amount of turns
+
+                        //apply used int
+
+                        break;
+                    case 3:
+                        //Checks which item this is (if needed)
+
+                        break;
+                    case 4:
+                        //Checks which item this is (if needed)
+
+                        //Conversion
+
+                        //apply used int
+                        break;
+                    case 5:
+                        //Checks which item this is (if needed)
+
+                        //Gives X amount of randomized items with an item picker system
+
+                        //apply used int
+                        break;
+                    case 6:
+                        //Checks which item this is (if needed)
+
+                        //(Optional chance)
+
+                        //Gameovering and removal of the item
+                        break;
+                    case 7:
+                        //Checks which item this is (if needed)
+
+                        //Purge guilt (and or adds extra effects)
+
+                        //Apply wornint
+                        break;
+                    case 8:
+                        //Checks which item this is (if needed)
+
+                        //Checks for hopeless debuff
+
+                        //Removal
+
+                        //Apply wornint
+                        break;
+                    case 9:
+                        //Checks which item this is (if needed)
+
+                        //Gives menu
+
+                        //Spawns sin
+
+                        //Apply wornint
+                        break;
+                    case 10:
+                        //Checks which item this is (if needed)
+
+                        //Spawns random sin
+
+                        //Apply wornint
+                        break;
+                    case 11:
+                        //Checks which item this is (if needed)
+
+                        //Foreach loop
+
+                        //Deletes this item
+                        break;
+                    case 12:
+                        //Checks which item this is (if needed
+
+                        //Summon zodiac or smth
+
+                        //Apply usedint
+                        break;
+                    default:
+                        //Default should never be called, atleast, I have to make sure it doesn't
+                        Console.WriteLine("You've encountered an error. The current ItemUse is being used, which is {0}.", selectedItemString.itemUse);
+                        break;
+                }
+            }
+        }
 
         //Menu (FINALLY)
         Console.WriteLine("Minus One: Descent To Madness.");
@@ -615,9 +728,11 @@ internal class program
                         if (Inventory.Any(item => item.name.Equals(useInput, StringComparison.OrdinalIgnoreCase)))
                         {
                             Console.WriteLine("DEBUG: Used {0}!", useInput);
+                            
                         } else
                         {
                             Console.WriteLine("That's not an valid item!");
+
                         }
                         break;
                 }
