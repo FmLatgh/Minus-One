@@ -36,7 +36,7 @@ internal class program
          */
         public int projRange = 3; // 3 by default
         public int speed = 1; //1 lowest, 3 highest (translates to steps)
-        public Enemy(string name, bool stunned, bool stunprod, bool isLethal, bool shootsProjectiles, int projDebuff, int projRange, int speed)
+        public Enemy(string name, bool stunned, bool stunprod, bool isLethal, bool shootsProjectiles, int projDebuff, int projRange, int speed, bool isNPC)
         {
             this.name = name;
             this.stunned = stunned;
@@ -46,6 +46,7 @@ internal class program
             this.projDebuff = projDebuff;
             this.projRange = projRange;
             this.speed = speed;
+            this.isNPC = isNPC;
         }
     }
     public class Item
@@ -127,6 +128,9 @@ internal class program
         int currentButtons = 0;
 
         int enemyRarityMin;
+        int enemySpawnRarity = 100; //Percentage from 1 on X
+
+        
 
         bool wrathOnly = false; //On Nil
         bool errorOnly = false; //On broken
@@ -160,33 +164,63 @@ internal class program
          */
 
         //Enemy Database Management
-        Enemy Error = new Enemy("Error", true, true, true, true, 6, 100, 10); //Spawns when error
-        Enemy Rusanic = new Enemy("Rusanic", false, true, true, true, 7, 7, 4); //Spawns at Zodiac :troll:
-        Enemy CENSORED = new Enemy("[CENSORED]", false, false, true, true, 8, 3, 3);  //Only spawns at certain (secret) conditions
-        Enemy Walker = new Enemy("Walker", false, false, true, true, 1, 3, 2);
-        Enemy Gogh = new Enemy("Gogh", false, false, true, false, 0, 0, 3); //Special Enemy that kills if you have a GUN
-        Enemy Seer = new Enemy("Seer", false, false, true, false, 0, 0, 3); 
-        Enemy Blight = new Enemy("Blight", false, true, true, true, 2, 1, 2);
-        Enemy Clown = new Enemy("Clown", false, false, true, false, 0, 0, 4);
-        Enemy WN = new Enemy("White Night", false, true, true, true, 9, 2, 1); //Spawns under special conditions
-        Enemy Enphoso = new Enemy("Enphoso", false, true, true, true, 8, 6, 3); //Spawns under special conditions
-        Enemy Roland = new Enemy("Roland", true, true, false, false, 0, 0, 0); //NPC, Sets Despair back to 0 if above 40
-        Enemy Martin = new Enemy("Martin", true, true, false, false, 0, 0, 0); //NPC, offers compassion, or anything else, for a price...
-        Enemy Binah = new Enemy("Binah", true, true, false, false, 0, 0, 0); //NPC, offers utillity items such as camera's
-        Enemy Bew = new Enemy("Bew", true, true, false, false, 0, 0, 0); //NPC, offers food items on the way
-        Enemy Sinister = new Enemy("Sinister", true, true, false, false, 0, 0, 0); //NPC, offers friendship and various quotes from the real sinister
+        Enemy Error = new Enemy("Error", true, true, true, true, 6, 100, 10, false); //Spawns when error
+        Enemy Rusanic = new Enemy("Rusanic", false, true, true, true, 7, 7, 4, false); //Spawns at Zodiac :troll:
+        Enemy CENSORED = new Enemy("[CENSORED]", false, false, true, true, 8, 3, 3, false);  //Only spawns at certain (secret) conditions
+        Enemy Walker = new Enemy("Walker", false, false, true, true, 1, 3, 2, false);
+        Enemy Gogh = new Enemy("Gogh", false, false, true, false, 0, 0, 3, false); //Special Enemy that kills if you have a GUN
+        Enemy Seer = new Enemy("Seer", false, false, true, false, 0, 0, 3, false); 
+        Enemy Blight = new Enemy("Blight", false, true, true, true, 2, 1, 2, false);
+        Enemy Clown = new Enemy("Clown", false, false, true, false, 0, 0, 4, false);
+        Enemy WN = new Enemy("White Night", false, true, true, true, 9, 2, 1, false); //Spawns under special conditions
+        Enemy Enphoso = new Enemy("Enphoso", false, true, true, true, 8, 6, 3, false); //Spawns under special conditions
+        Enemy Roland = new Enemy("Roland", true, true, false, false, 0, 0, 0, true); //NPC, Sets Despair back to 0 if above 40
+        Enemy Martin = new Enemy("Martin", true, true, false, false, 0, 0, 0, true); //NPC, offers compassion, or anything else, for a price...
+        Enemy Binah = new Enemy("Binah", true, true, false, false, 0, 0, 0, true); //NPC, offers utillity items such as camera's
+        Enemy Bew = new Enemy("Bew", true, true, false, false, 0, 0, 0, true); //NPC, offers food items on the way
+        Enemy Sinister = new Enemy("Sinister", true, true, false, false, 0, 0, 0, true); //NPC, offers friendship and various quotes from the real sinister
 
         //Sin enemy Database
-        Enemy Greed = new Enemy("Greed", false, false, true, true, 4, 5, 4);
-        Enemy Gluttony = new Enemy("Gluttony", false, false, true, true, 4, 5, 4);
-        Enemy Pride = new Enemy("Pride", false, true, true, false, 0, 0, 5);
-        Enemy Sloth = new Enemy("Sloth", false, true, true, true, 1, 10, 1);
-        Enemy Lust = new Enemy("Lust", false, true, true, true, 4, 2, 2);
-        Enemy Wrath = new Enemy("Wrath", false, true, true, false, 0, 0, 5);
-        Enemy Despair = new Enemy("Despair", false, true, true, false, 0, 0, 3);
+        Enemy Greed = new Enemy("Greed", false, false, true, true, 4, 5, 4, false);
+        Enemy Gluttony = new Enemy("Gluttony", false, false, true, true, 4, 5, 4, false);
+        Enemy Pride = new Enemy("Pride", false, true, true, false, 0, 0, 5, false);
+        Enemy Sloth = new Enemy("Sloth", false, true, true, true, 1, 10, 1, false);
+        Enemy Lust = new Enemy("Lust", false, true, true, true, 4, 2, 2, false);
+        Enemy Wrath = new Enemy("Wrath", false, true, true, false, 0, 0, 5, false);
+        Enemy Despair = new Enemy("Despair", false, true, true, false, 0, 0, 3, false);
+
+        //Enemy rarity Management (SINCE THIS WAS APPARENTLY NEEDED)
+        var CommonE = new List<Enemy>();
+        CommonE.add(Walker);
+        CommonE.add(Clown);
+        CommonE.add(Blight);
+        CommonE.add(Seer);
+
+        var NPC = new List<Enemy>();
+        UnusualE.add(Bew);
+        UnusualE.add(Martin);
+        UnusualE.add(Roland);
+        UnusualE.add(Sinister);
+        UnusualE.add(Binah);
+        UnusualE.add(Gogh);
+
+        var SpecialE = new List<Enemy>();
+        SpecialE.add(Error);
+        SpecialE.add(Rusanic);
+        SpecialE.add(CENSORED);
+        SpecialE.add(WN);
+        SpecialE.add(Enphoso);
+
+        var SinEnemy = new List<Enemy>();
+        SinEnemy.add(Wrath);
+        SinEnemy.add(Greed);
+        SinEnemy.add(Pride);
+        SinEnemy.add(Sloth);
+        SinEnemy.add(Despair);
+        SinEnemy.add(Lust);
+        SinEnemy.add(Gluttony);
 
         //Item Database Management
-
 
         //1 Inflicts stun when nearby
         Item Camera = new Item("Camera", 1, 1, 3, 0, false);
@@ -289,7 +323,9 @@ internal class program
         int sinChooser = 0; //Read below
         int despairModifier = 0; //Goes up every time an monster is encountered can only be lowered while meeting the "Roland" entity, which will not kill you when despair is above 40
         int chaseLength = 25; //Sets a step goal for the enemy, will stop walking afterwards, will scale with difficulty, rarity n'd such
-        int enemySteps = 0; //Sets step amount
+        int enemySteps = 3; //Sets step amount
+        int enemyStepsBonus = 0
+        int enemyStepsFinal = enemySteps + enemyStepsBonus;
 
         //Variables that define Items and littering
         int littering = 20; // is an 1/definable % chance to spawn an item on a step
@@ -392,6 +428,7 @@ internal class program
          * DATA
          * dip (value) (value), adds the first to the second
          * rip (value) (value), removes value the second
+         * get (defined int), shows current value
          * 
          * PLAYER
          * ruina (ailmentInt), gives said ailment int
@@ -591,7 +628,30 @@ internal class program
                         //Default should never be called, atleast, I have to make sure it doesn't
                         Console.WriteLine("You've encountered an error. The current ItemUse is being used, which is {0}.", selectedItemString.itemUse);
                         break;
+                        if (selectedItemString.currentuse == selectedItemString.maxuse)
+                        {
+                            selectedItemString.wornout = true;
+                        }
                 }
+            }
+        }
+
+        void Chase(List<Enemy> listChoose)
+        {
+            //Better off making smth like I did when I picked items
+            int enemyIndexSpawn = 0;
+            int maxS = listChoose.Count;
+            indexPick.next(0, maxS+1);
+
+            Enemy chosenenemy = listChoose[indexPick];
+            if (chosenenemy != null)
+            {
+                Console.WriteLine("Suddenly... you look behind you... Something is off...");
+                Console.WriteLine("IS THAT {0}? YOU BETTER RUN!", chosenenemy.name);
+                Console.WriteLine("DEBUG: Chased by {0}, Lasts for {1}, enemy has {2}")
+            } else
+            {
+                Console.WriteLine("You've encountered a bug at line 638.");
             }
         }
 
