@@ -325,7 +325,7 @@ internal class program
         int chaseLength = 25; //Sets a step goal for the enemy, will stop walking afterwards, will scale with difficulty, rarity n'd such
         int enemyCurrentSteps = 0; //Adds blah blah blah yeah we know this I mean enemy current steps which somes from enemysteps final, ehhhhhhhhhhhh
         int enemySteps = 3; //Sets step amount
-        int enemyStepsBonus = 0
+        int enemyStepsBonus = 0; 
         int enemyStepsFinal = enemySteps + enemyStepsBonus;
 
         //Variables that define Items and littering
@@ -652,7 +652,7 @@ internal class program
                 Console.WriteLine("DEBUG: Chased by {0}, Lasts for {1}, enemy has {2}");
 
                 enemySteps = chosenenemy.speed;
-                currentSteps = steps
+                currentSteps = steps;
             } else
             {
                 Console.WriteLine("You've encountered a bug at line 638.");
