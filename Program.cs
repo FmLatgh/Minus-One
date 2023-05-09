@@ -323,6 +323,7 @@ internal class program
         int sinChooser = 0; //Read below
         int despairModifier = 0; //Goes up every time an monster is encountered can only be lowered while meeting the "Roland" entity, which will not kill you when despair is above 40
         int chaseLength = 25; //Sets a step goal for the enemy, will stop walking afterwards, will scale with difficulty, rarity n'd such
+        int enemyCurrentSteps = 0; //Adds blah blah blah yeah we know this I mean enemy current steps which somes from enemysteps final, ehhhhhhhhhhhh
         int enemySteps = 3; //Sets step amount
         int enemyStepsBonus = 0
         int enemyStepsFinal = enemySteps + enemyStepsBonus;
@@ -648,7 +649,10 @@ internal class program
             {
                 Console.WriteLine("Suddenly... you look behind you... Something is off...");
                 Console.WriteLine("IS THAT {0}? YOU BETTER RUN!", chosenenemy.name);
-                Console.WriteLine("DEBUG: Chased by {0}, Lasts for {1}, enemy has {2}")
+                Console.WriteLine("DEBUG: Chased by {0}, Lasts for {1}, enemy has {2}");
+
+                enemySteps = chosenenemy.speed;
+                currentSteps = steps
             } else
             {
                 Console.WriteLine("You've encountered a bug at line 638.");
@@ -741,14 +745,17 @@ internal class program
             }
             if (currentDif >= 8 && currentDif <= 14)
             {
+                wrathOnly = false;
                 artificialErrorWrathCombo = true;
             }
             if (currentDif >= 15 && currentDif <= 19)
             {
+                artificialErrorWrathCombo = false;
                 errorOnly = true;
             }
             if (currentDif >= 20)
             {
+                errorOnly = false;
                 buttonGoal = 50 + (currentDif * 10);
                 Console.WriteLine("IF YOU HAVE GOTTEN THIS FAR, PLEASE END YOUR RUN. THIS IS THE FINAL DIFFICULTY, AND NOTHING IS BEHIND THIS. THIS DIFFICULTY IS MEANT TO STOP YOU. CONGRATULATIONS ON COMING THIS FAR.");
             }
