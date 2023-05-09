@@ -36,6 +36,7 @@ internal class program
          */
         public int projRange = 3; // 3 by default
         public int speed = 1; //1 lowest, 3 highest (translates to steps)
+        public bool isNPC = false;
         public Enemy(string name, bool stunned, bool stunprod, bool isLethal, bool shootsProjectiles, int projDebuff, int projRange, int speed, bool isNPC)
         {
             this.name = name;
@@ -191,34 +192,34 @@ internal class program
 
         //Enemy rarity Management (SINCE THIS WAS APPARENTLY NEEDED)
         var CommonE = new List<Enemy>();
-        CommonE.add(Walker);
-        CommonE.add(Clown);
-        CommonE.add(Blight);
-        CommonE.add(Seer);
+        CommonE.Add(Walker);
+        CommonE.Add(Clown);
+        CommonE.Add(Blight);
+        CommonE.Add(Seer);
 
         var NPC = new List<Enemy>();
-        UnusualE.add(Bew);
-        UnusualE.add(Martin);
-        UnusualE.add(Roland);
-        UnusualE.add(Sinister);
-        UnusualE.add(Binah);
-        UnusualE.add(Gogh);
+        NPC.Add(Bew);
+        NPC.Add(Martin);
+        NPC.Add(Roland);
+        NPC.Add(Sinister);
+        NPC.Add(Binah);
+        NPC.Add(Gogh);
 
         var SpecialE = new List<Enemy>();
-        SpecialE.add(Error);
-        SpecialE.add(Rusanic);
-        SpecialE.add(CENSORED);
-        SpecialE.add(WN);
-        SpecialE.add(Enphoso);
+        SpecialE.Add(Error);
+        SpecialE.Add(Rusanic);
+        SpecialE.Add(CENSORED);
+        SpecialE.Add(WN);
+        SpecialE.Add(Enphoso);
 
         var SinEnemy = new List<Enemy>();
-        SinEnemy.add(Wrath);
-        SinEnemy.add(Greed);
-        SinEnemy.add(Pride);
-        SinEnemy.add(Sloth);
-        SinEnemy.add(Despair);
-        SinEnemy.add(Lust);
-        SinEnemy.add(Gluttony);
+        SinEnemy.Add(Wrath);
+        SinEnemy.Add(Greed);
+        SinEnemy.Add(Pride);
+        SinEnemy.Add(Sloth);
+        SinEnemy.Add(Despair);
+        SinEnemy.Add(Lust);
+        SinEnemy.Add(Gluttony);
 
         //Item Database Management
 
@@ -642,9 +643,9 @@ internal class program
             //Better off making smth like I did when I picked items
             int enemyIndexSpawn = 0;
             int maxS = listChoose.Count;
-            indexPick.next(0, maxS+1);
+            int indexP = indexPick.Next(0, maxS+1);
 
-            Enemy chosenenemy = listChoose[indexPick];
+            Enemy chosenenemy = listChoose[indexP];
             if (chosenenemy != null)
             {
                 Console.WriteLine("Suddenly... you look behind you... Something is off...");
@@ -652,7 +653,8 @@ internal class program
                 Console.WriteLine("DEBUG: Chased by {0}, Lasts for {1}, enemy has {2}");
 
                 enemySteps = chosenenemy.speed;
-                currentSteps = steps;
+                int v = enemyStepsFinal + currentSteps;
+                currentSteps = v;
             } else
             {
                 Console.WriteLine("You've encountered a bug at line 638.");
