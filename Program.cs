@@ -664,8 +664,27 @@ internal class program
         Console.WriteLine("Press any key to start.");
         Console.ReadKey();
 
-        Console.WriteLine("What is your name, Traveller?");
-        name = Console.ReadLine();
+        bool nameCorrect = false;
+        List <string> usedNames = new List<string>();
+        foreach (Enemy npc in NPC)
+        {
+            usedNames.Add(npc.name);
+        }
+        do
+        {
+            nameCorrect = false;
+            Console.WriteLine("What is your name, Traveller?");
+            name = Console.ReadLine();
+            if (usedNames.Contains(name))
+            {
+                Console.WriteLine("Sorry, that name is already taken. Please choose a different name.");
+            }
+            else
+            {
+                nameCorrect = true;
+            }
+
+        } while (!nameCorrect);
         Console.WriteLine("Very well, {0}.", name);
         Console.WriteLine("Do you want to hear the tutorial? Y/N");
         
