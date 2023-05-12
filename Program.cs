@@ -37,6 +37,7 @@ internal class program
         public int projRange = 3; // 3 by default
         public int speed = 1; //1 lowest, 3 highest (translates to steps)
         public bool isNPC = false;
+ 
         public Enemy(string name, bool stunned, bool stunprod, bool isLethal, bool shootsProjectiles, int projDebuff, int projRange, int speed, bool isNPC)
         {
             this.name = name;
@@ -80,7 +81,118 @@ internal class program
          * 12 = Changes this item in an item of choice
          */
         public bool wornout;
-        public Item(string name, int rarity, int itemUse, int maxuse, int currentuse, bool wornout)
+        public int ID;
+
+        void Use()
+        {
+            switch (this.itemUse)
+            {
+                case 1:
+                    //Checks which item this is (if needed)
+
+                    //Check for distance player from enemy in chase
+
+                    //apply stun
+
+                    //Apply usedint
+                    break;
+                case 2:
+                    //Checks which item this is (if needed)
+
+                    //Set chance of spawning to X for X amount of turns
+
+                    //apply used int
+
+                    break;
+                case 3:
+                    //Checks which item this is (if needed)
+
+                    break;
+                case 4:
+                    //Checks which item this is (if needed)
+
+                    //Conversion
+
+                    //apply used int
+                    break;
+                case 5:
+                    //Checks which item this is (if needed)
+
+                    //Gives X amount of randomized items with an item picker system
+
+                    //apply used int
+                    break;
+                case 6:
+                    //Checks which item this is (if needed)
+
+                    //(Optional chance)
+
+                    //Gameovering and removal of the item
+                    break;
+                case 7:
+                    //Checks which item this is (if needed)
+
+                    //Purge guilt (and or adds extra effects)
+
+                    //Apply wornint
+                    break;
+                case 8:
+                    //Checks which item this is (if needed)
+
+                    //Checks for hopeless debuff
+
+                    //Removal
+
+                    //Apply wornint
+                    break;
+                case 9:
+                    //Checks which item this is (if needed)
+
+                    //Gives menu
+
+                    //Spawns sin
+
+                    //Apply wornint
+                    break;
+                case 10:
+                    //Checks which item this is (if needed)
+
+                    //Spawns random sin
+
+                    //Apply wornint
+                    break;
+                case 11:
+                    //Checks which item this is (if needed)
+
+                    //Foreach loop
+
+                    //Deletes this item
+                    break;
+                case 12:
+                    //Checks which item this is (if needed
+
+                    //Summon zodiac or smth
+
+                    //Apply usedint
+                    break;
+                default:
+                    //Default should never be called, atleast, I have to make sure it doesn't
+                    Console.WriteLine("You've encountered an error. The current ItemUse is being used, which is {0}.", this.itemUse);
+                    break;
+            }
+
+            if (this.currentuse == this.maxuse)
+            {
+                this.wornout = true;
+            }
+
+        }
+        void DeleteItem()
+        {
+            
+        }
+
+        public Item(string name, int rarity, int itemUse, int maxuse, int currentuse, bool wornout, int ID)
         {
             this.name = name;
             this.rarity = rarity;
@@ -88,6 +200,7 @@ internal class program
             this.maxuse = maxuse;
             this.currentuse = currentuse;
             this.wornout = wornout;
+            this.ID = ID;
         }
     }
     private static void Main(string[] args)
@@ -99,31 +212,11 @@ internal class program
         int currentFloor = 0;
         int currentDif = 1;
 
-        //Names the difficulty accordingly
-        if (currentDif == 1) { displayDif = "Easy"; }
-        if (currentDif == 2) { displayDif = "Medium"; }
-        if (currentDif == 3) { displayDif = "Hard"; }
-        if (currentDif == 4) { displayDif = "Insane"; }
-        if (currentDif == 5) { displayDif = "Unreal"; }
-        if (currentDif == 6) { displayDif = "Impossible"; }
-        if (currentDif == 7) { displayDif = "Nil"; }
-        if (currentDif == 8) { displayDif = "Artificial I"; }
-        if (currentDif == 9) { displayDif = "Artificial II"; }
-        if (currentDif == 10) { displayDif = "Artificial III"; }
-        if (currentDif == 11) { displayDif = "Artificial IV"; }
-        if (currentDif == 12) { displayDif = "Artificial V"; }
-        if (currentDif == 13) { displayDif = "Artificial VI"; }
-        if (currentDif == 14) { displayDif = "Artificial VII"; }
-        if (currentDif == 15) { displayDif = "Broken I"; }
-        if (currentDif == 16) { displayDif = "Broken II"; }
-        if (currentDif == 17) { displayDif = "Broken III"; }
-        if (currentDif == 18) { displayDif = "Broken IV"; }
-        if (currentDif == 19) { displayDif = "Broken V"; }
-        if (currentDif >= 20) { displayDif = "Solstice"; }
+        
 
         //Variables that define how long an floor is and how hard it currently is to do stuff
         int buttonGoal = 0;
-        int stepGoal;
+        int stepGoal = 0;
 
         int currentSteps = 0;
         int currentButtons = 0;
@@ -131,7 +224,7 @@ internal class program
         int enemyRarityMin;
         int enemySpawnRarity = 100; //Percentage from 1 on X
 
-        
+        bool floorpassed = false;
 
         bool wrathOnly = false; //On Nil
         bool errorOnly = false; //On broken
@@ -170,7 +263,7 @@ internal class program
         Enemy CENSORED = new Enemy("[CENSORED]", false, false, true, true, 8, 3, 3, false);  //Only spawns at certain (secret) conditions
         Enemy Walker = new Enemy("Walker", false, false, true, true, 1, 3, 2, false);
         Enemy Gogh = new Enemy("Gogh", false, false, true, false, 0, 0, 3, false); //Special Enemy that kills if you have a GUN
-        Enemy Seer = new Enemy("Seer", false, false, true, false, 0, 0, 3, false); 
+        Enemy Seer = new Enemy("Seer", false, false, true, false, 0, 0, 3, false);
         Enemy Blight = new Enemy("Blight", false, true, true, true, 2, 1, 2, false);
         Enemy Clown = new Enemy("Clown", false, false, true, false, 0, 0, 4, false);
         Enemy WN = new Enemy("White Night", false, true, true, true, 9, 2, 1, false); //Spawns under special conditions
@@ -224,57 +317,57 @@ internal class program
         //Item Database Management
 
         //1 Inflicts stun when nearby
-        Item Camera = new Item("Camera", 1, 1, 3, 0, false);
-        Item Flash = new Item("Flashbang", 1, 1, 3, 0, false);
-        Item Debug = new Item("Debug", 6, 1, 1, 1, false); //TO BE USED WHILE TESTING CODE!!!
+        Item Camera = new Item("Camera", 1, 1, 3, 0, false, 0);
+        Item Flash = new Item("Flashbang", 1, 1, 3, 0, false, 0);
+        Item Debug = new Item("Debug", 6, 1, 1, 1, false, 0); //TO BE USED WHILE TESTING CODE!!!
         //2 Deters enemies
-        Item SmokeBomb = new Item("Smoke Bomb", 1, 2, 1, 0, false);
-        Item Fart = new Item("Fart", 3, 2, 5, 0, false); //Farts last longer and are more effective
+        Item SmokeBomb = new Item("Smoke Bomb", 2, 2, 1, 0, false, 0);
+        Item Fart = new Item("Fart", 3, 2, 5, 0, false, 0); //Farts last longer and are more effective
 
         //3 Grants extra steps
-        Item Shoes = new Item("Shoes", 2, 3, 5, 0, false);
-        Item Jetpack = new Item("Jetpack", 4, 3, 10, 0, false);
-        Item Glognut = new Item("Glognut", 5, 3, 1000, 0, false); //Has a 25% chance to spawn enphoso
-        Item HeartGlognut = new Item("Heart Glognut", 6, 3, 10000, 0, false); //mwa mwa mwa mwa mwa
+        Item Shoes = new Item("Shoes", 2, 3, 5, 0, false, 0);
+        Item Jetpack = new Item("Jetpack", 4, 3, 10, 0, false, 0);
+        Item Glognut = new Item("Glognut", 5, 3, 1000, 0, false, 0); //Has a 25% chance to spawn enphoso
+        Item HeartGlognut = new Item("Heart Glognut", 6, 3, 10000, 0, false, 0); //mwa mwa mwa mwa mwa
 
         //4 Turns into item of choice
-        Item EightBall = new Item("8-Ball", 5, 4, 1, 0, false);
-        Item BlackBox = new Item("---------", 5, 4, 1, 0, false); //Has a 30% Chance to become a GUN
+        Item EightBall = new Item("8-Ball", 5, 4, 1, 0, false, 0);
+        Item BlackBox = new Item("---------", 5, 4, 1, 0, false, 0); //Has a 30% Chance to become a GUN
 
         //5 Turns into random items
-        Item sGift = new Item("Small Gift", 2, 5, 1, 0, false); //Gives 1 random
-        Item mGift = new Item("Medium Gift", 3, 5, 1, 0, false); //Gives 2 random
-        Item lGift = new Item("Large Gift", 4, 5, 1, 0, false); //Gives 3 random
+        Item sGift = new Item("Small Gift", 2, 5, 1, 0, false, 0); //Gives 1 random
+        Item mGift = new Item("Medium Gift", 3, 5, 1, 0, false, 0); //Gives 2 random
+        Item lGift = new Item("Large Gift", 4, 5, 1, 0, false, 0); //Gives 3 random
 
         //6 Kills yourself instantly
-        Item Knife = new Item("Knife", 4, 6, 1, 0, false); //100% chance
-        Item Gun = new Item("Russian", 3, 6, 1, 0, false); //50% chance
+        Item Knife = new Item("Knife", 4, 6, 1, 0, false, 0); //100% chance
+        Item Gun = new Item("Russian", 3, 6, 1, 0, false, 0); //50% chance
 
         //7 "Confesses" for your sin, removes guilt debuff
-        Item OneSin = new Item("One Sin and 100 good deeds", 4, 7, 10, 0, false); //100% Chance
-        Item JCross = new Item("Jesus Cross", 5, 7, 3, 0, false); //50-50, summons whitenight upon fail
+        Item OneSin = new Item("One Sin and 100 good deeds", 4, 7, 10, 0, false, 0); //100% Chance
+        Item JCross = new Item("Jesus Cross", 5, 7, 3, 0, false, 0); //50-50, summons whitenight upon fail
 
         //8 Cures HOPELESS
-        Item HOPE = new Item("HOPES AND DREAMS", 4, 8, 10, 0, false); //Cures "6" hopeless
-        Item HELP = new Item("HELPING HAND", 4, 8, 10, 0, false); //Cures "8" hopeless
+        Item HOPE = new Item("HOPES AND DREAMS", 4, 8, 10, 0, false, 0); //Cures "6" hopeless
+        Item HELP = new Item("HELPING HAND", 4, 8, 10, 0, false, 0); //Cures "8" hopeless
 
         //9 Summons sin of choice
-        Item VileDeed = new Item("Vile Deed", 3, 9, 3, 0, false);
-        Item Contract = new Item("Contract", 3, 9, 3, 0, false); //"Reskin"
+        Item VileDeed = new Item("Vile Deed", 3, 9, 3, 0, false, 0);
+        Item Contract = new Item("Contract", 3, 9, 3, 0, false, 0); //"Reskin"
 
         //10 Summons random sin
-        Item ThornCrown = new Item("Thorn Crown", 2, 10, 5, 0, false);
-        
+        Item ThornCrown = new Item("Thorn Crown", 2, 10, 5, 0, false, 0);
+
         //11 Swaps up your entire inventory
-        Item CSlots = new Item("Crazy Slots", 5, 11, 1, 0, false);
-        
+        Item CSlots = new Item("Crazy Slots", 5, 11, 1, 0, false, 0);
+
         //12 Gives you zodiac, idk why you'd want this
-        Item DollarSign = new Item("Dollar Sign", 5, 12, 1, 0, false);
-        Item Constellation = new Item("Constellation", 5, 12, 1, 0, false); //Reskin
+        Item DollarSign = new Item("Dollar Sign", 5, 12, 1, 0, false, 0);
+        Item Constellation = new Item("Constellation", 5, 12, 1, 0, false, 0); //Reskin
 
         //Item arrays dependant on rarity
         //SERVES AS LOOTTABLE, MODIFY AT YOUR OWN RISK!
-        
+
         //Common
         var Common = new List<Item>();
         Common.Add(Camera);
@@ -306,7 +399,7 @@ internal class program
 
 
         //One of a Kind
-        var Exotic = new List<Item>();  
+        var Exotic = new List<Item>();
         Exotic.Add(EightBall);
         Exotic.Add(BlackBox);
         Exotic.Add(JCross);
@@ -322,12 +415,12 @@ internal class program
 
         //Variables that define Exotic Enemies Values
         int sinChooser = 0; //Read below
-        int despairModifier = 0; //Goes up every time an monster is encountered can only be lowered while meeting the "Roland" entity, which will not kill you when despair is above 40
-        int chaseLength = 25; //Sets a step goal for the enemy, will stop walking afterwards, will scale with difficulty, rarity n'd such
+        int despairModifier = 0; //Goes up every time an monster is encountered can only be lowered while meeting the "Roland" entity, which will not kill you when despair is above 40 (FUNNILY ENOUGH ONLY FLAVOUR TEXT WILL HELP YOU FIGURE OUT IF YOU HAVE 40+)
+        int chaseLength = 10 + (3 * currentDif); //Sets a step goal for the enemy, will stop walking afterwards, will scale with difficulty, rarity n'd such
         int enemyCurrentSteps = 0; //Adds blah blah blah yeah we know this I mean enemy current steps which somes from enemysteps final, ehhhhhhhhhhhh
         int enemySteps = 3; //Sets step amount
-        int enemyStepsBonus = 0; 
-        int enemyStepsFinal = enemySteps + enemyStepsBonus;
+        int enemyStepsBonus = 0; //Checks stepbonus
+        int enemyStepsFinal = enemySteps + enemyStepsBonus; //Sum of steps + bonus
 
         //Variables that define Items and littering
         int littering = 20; // is an 1/definable % chance to spawn an item on a step
@@ -355,12 +448,11 @@ internal class program
         Random itemSpawn = new Random(); //Checks if an item spawns in step range
         Random pickRare = new Random(); //Select Rarity Category
         Random indexPick = new Random(); //Checks in rarity lists when lootPick() is called
-        
+
 
         //Variables that declare player status, such as stunned
-        bool dead = false; //Checks for gameover
-        bool start = false;
-        bool spotted = false;
+        bool dead = false; //Checks for 
+        bool spotted = false; //Checks if in chase
 
         //Variables that declare the current debuffs and existing debuffs off the player
         List<string> DebuffLibrary = new List<string>(); //Defines debuff library
@@ -412,7 +504,7 @@ internal class program
 
         //Stepbonus Placeholder
         List<int> stepBonus = new List<int>();
-        
+
         //Admin Client secret (USE AT YOUR OWN RISK)
         bool admintoggle = false; //To declare when the debug is activated
         string adminsecret = "DebugMe";
@@ -438,6 +530,100 @@ internal class program
          *
          */
         
+        //This method will update the game info when needed
+        void UpdateGameInfo()
+        {
+            //Names the difficulty accordingly
+            if (currentDif == 1) { displayDif = "Easy"; }
+            if (currentDif == 2) { displayDif = "Medium"; }
+            if (currentDif == 3) { displayDif = "Hard"; }
+            if (currentDif == 4) { displayDif = "Insane"; }
+            if (currentDif == 5) { displayDif = "Unreal"; }
+            if (currentDif == 6) { displayDif = "Impossible"; }
+            if (currentDif == 7) { displayDif = "Nil"; }
+            if (currentDif == 8) { displayDif = "Artificial I"; }
+            if (currentDif == 9) { displayDif = "Artificial II"; }
+            if (currentDif == 10) { displayDif = "Artificial III"; }
+            if (currentDif == 11) { displayDif = "Artificial IV"; }
+            if (currentDif == 12) { displayDif = "Artificial V"; }
+            if (currentDif == 13) { displayDif = "Artificial VI"; }
+            if (currentDif == 14) { displayDif = "Artificial VII"; }
+            if (currentDif == 15) { displayDif = "Broken I"; }
+            if (currentDif == 16) { displayDif = "Broken II"; }
+            if (currentDif == 17) { displayDif = "Broken III"; }
+            if (currentDif == 18) { displayDif = "Broken IV"; }
+            if (currentDif == 19) { displayDif = "Broken V"; }
+            if (currentDif >= 20) { displayDif = "Solstice"; }
+
+            //Variables that explain during, after and before round information
+             spottedBy = "Line 560 error"; //Currently in debug!
+             killedBy = "Line 561 error"; //Currently in debug!
+             currentFloor = 0; //Something I'll have to change later
+
+
+
+            //Variables that define how long an floor is and how hard it currently is to do stuff
+             buttonGoal = 0;
+             stepGoal = 0;
+
+            currentSteps = 0;
+            currentButtons = 0;
+
+            enemySpawnRarity = 100; //Percentage from 1 on X
+
+            wrathOnly = false; //On Nil
+            errorOnly = false; //On broken
+            artificialErrorWrathCombo = false; //On artificial
+
+            if (currentDif >= 3) //If the difficulty is "Hard" or above...
+            {
+                buttonGoal = 1 + (2 * currentDif); //Sets button requirement by 1 + (2 * i), which is as base "6".
+            }
+            else if (currentDif >= 4)
+            {
+                enemyRarityMin = 3;
+            }
+            if (currentDif >= 5)
+            {
+                enemyRarityMin = 5;
+            }
+            if (currentDif >= 6)
+            {
+                enemyRarityMin = 7;
+            }
+            if (currentDif >= 7)
+            {
+                wrathOnly = true;
+            }
+            if (currentDif >= 8 && currentDif <= 14)
+            {
+                wrathOnly = false;
+                artificialErrorWrathCombo = true;
+            }
+            if (currentDif >= 15 && currentDif <= 19)
+            {
+                artificialErrorWrathCombo = false;
+                errorOnly = true;
+            }
+            if (currentDif >= 20)
+            {
+                errorOnly = false;
+                buttonGoal = 50 + (currentDif * 10);
+                Console.WriteLine("IF YOU HAVE GOTTEN THIS FAR, PLEASE END YOUR RUN. THIS IS THE FINAL DIFFICULTY, AND NOTHING IS BEHIND THIS. THIS DIFFICULTY IS MEANT TO STOP YOU. CONGRATULATIONS ON COMING THIS FAR.");
+            }
+
+
+        }
+
+        //Method that checks if current floor is passed
+        void CheckFloorPass()
+        {
+            if (currentButtons >= buttonGoal && currentSteps >= stepGoal && !spotted)
+            {
+                floorpassed = true;
+            }
+        }
+
         //Loottable picker
         Item lootPick(int minRarity)
         {
@@ -507,6 +693,7 @@ internal class program
             //Console.WriteLine("DEBUG: RARITY {0}, ITEMNAME {1}, LUCK {2}", chosenitem.rarity, chosenitem.name, chosenRarity);
             Console.WriteLine("You found an {0}!", chosenitem.name);
             return chosenitem;
+
         }
 
         void ItemUseage(Item selectedItemString)
@@ -630,10 +817,10 @@ internal class program
                         //Default should never be called, atleast, I have to make sure it doesn't
                         Console.WriteLine("You've encountered an error. The current ItemUse is being used, which is {0}.", selectedItemString.itemUse);
                         break;
-                        if (selectedItemString.currentuse == selectedItemString.maxuse)
-                        {
-                            selectedItemString.wornout = true;
-                        }
+                        //if (selectedItemString.currentuse == selectedItemString.maxuse)
+                        //{
+                        //    selectedItemString.wornout = true;
+                        //}
                 }
             }
         }
@@ -672,6 +859,7 @@ internal class program
         {
             usedNames.Add(npc.name);
         }
+
         do
         {
             nameCorrect = false;
@@ -742,45 +930,6 @@ internal class program
              * 15/19 - Broken(I/V) - The point where the game is unplayable. If somehow this difficulty is achieved, it will spawn only Error.
              * 20+ - Solstice - If SOMEHOW you are to come here, the game will become unplayable. This is only used for development, and should in no way be continued. Upon continuing, will just freeze you in your steps and is only achieved with the debug menu.
              */
-
-            stepGoal = 30 + (3 * currentDif);
-            if (currentDif >= 3) //If the difficulty is "Hard" or above...
-            {
-                buttonGoal = 1 + (2 * currentDif); //Sets button requirement by 1 + (2 * i), which is as base "6".
-            }
-            else if (currentDif >= 4)
-            {
-                enemyRarityMin = 3;
-            }
-            if (currentDif >= 5)
-            {
-                enemyRarityMin = 5;
-            }
-            if (currentDif >= 6)
-            {
-                enemyRarityMin = 7;
-            }
-            if (currentDif >= 7)
-            {
-                wrathOnly = true;
-            }
-            if (currentDif >= 8 && currentDif <= 14)
-            {
-                wrathOnly = false;
-                artificialErrorWrathCombo = true;
-            }
-            if (currentDif >= 15 && currentDif <= 19)
-            {
-                artificialErrorWrathCombo = false;
-                errorOnly = true;
-            }
-            if (currentDif >= 20)
-            {
-                errorOnly = false;
-                buttonGoal = 50 + (currentDif * 10);
-                Console.WriteLine("IF YOU HAVE GOTTEN THIS FAR, PLEASE END YOUR RUN. THIS IS THE FINAL DIFFICULTY, AND NOTHING IS BEHIND THIS. THIS DIFFICULTY IS MEANT TO STOP YOU. CONGRATULATIONS ON COMING THIS FAR.");
-            }
-
             //FLOOR LAYER
             do
             {
@@ -824,7 +973,8 @@ internal class program
                         }
                         break;
                 }
-            } while (currentSteps < stepGoal && currentButtons < buttonGoal);
+                CheckFloorPass();
+            } while (!floorpassed);
         } while (!dead);
 
         //Gameover sequence
