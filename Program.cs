@@ -63,9 +63,9 @@ internal class program
          * 5 = One of A Kind
          * 6 = RAM; Run Altering Modifier
          */
-        public int itemUse;
-        public int maxuse;
-        public int currentuse;
+        public int itemUse; //Current useage
+        public int maxuse; //Amount of useable times
+        public int currentuse; //Times used
         /*Explaination
          * 1 = Inflicts stun when nearby
          * 2 = Deters Enemies
@@ -209,14 +209,14 @@ internal class program
         string spottedBy = "Error";
         string killedBy = "Error";
         string displayDif = "Solstice";
-        int currentFloor = 0;
+        int currentFloor = 1;
         int currentDif = 1;
 
         
 
         //Variables that define how long an floor is and how hard it currently is to do stuff
-        int buttonGoal = 0;
-        int stepGoal = 0;
+        int buttonGoal = 1;
+        int stepGoal = 1;
 
         int currentSteps = 0;
         int currentButtons = 0;
@@ -533,6 +533,28 @@ internal class program
         //This method will update the game info when needed
         void UpdateGameInfo()
         {
+            //Sets the difficulty accordingly
+            if (currentFloor < 10) {currentDif = 1; }
+            else if (currentFloor >= 10) { currentDif = 2; }
+            else if (currentFloor >= 15) { currentDif = 3; }
+            else if (currentFloor >= 20) { currentDif = 4; }
+            else if (currentFloor >= 25) { currentDif = 5; }
+            else if (currentFloor >= 30) { currentDif = 6; }
+            else if (currentFloor >= 35) { currentDif = 7; }
+            else if (currentFloor >= 40) { currentDif = 8; }
+            else if (currentFloor >= 45) { currentDif = 9; }
+            else if (currentFloor >= 50) { currentDif = 10; }
+            else if (currentFloor >= 55) { currentDif = 11; }
+            else if (currentFloor >= 60) { currentDif = 12; }
+            else if (currentFloor >= 65) { currentDif = 13; }
+            else if (currentFloor >= 70) { currentDif = 14; }
+            else if (currentFloor >= 75) { currentDif = 15; }
+            else if (currentFloor >= 80) { currentDif = 16; }
+            else if (currentFloor >= 85) { currentDif = 17; }
+            else if (currentFloor >= 90) { currentDif = 18; }
+            else if (currentFloor >= 95) { currentDif = 19; }
+            else if (currentFloor >= 100) { currentDif = 20; }
+
             //Names the difficulty accordingly
             if (currentDif == 1) { displayDif = "Easy"; }
             if (currentDif == 2) { displayDif = "Medium"; }
@@ -556,15 +578,8 @@ internal class program
             if (currentDif >= 20) { displayDif = "Solstice"; }
 
             //Variables that explain during, after and before round information
-             spottedBy = "Line 560 error"; //Currently in debug!
-             killedBy = "Line 561 error"; //Currently in debug!
-             currentFloor = 0; //Something I'll have to change later
-
-
-
-            //Variables that define how long an floor is and how hard it currently is to do stuff
-             buttonGoal = 0;
-             stepGoal = 0;
+             spottedBy = "Line 561 error"; //Currently in debug!
+             killedBy = "Line 562 error"; //Currently in debug!
 
             currentSteps = 0;
             currentButtons = 0;
@@ -575,37 +590,49 @@ internal class program
             errorOnly = false; //On broken
             artificialErrorWrathCombo = false; //On artificial
 
-            if (currentDif >= 3) //If the difficulty is "Hard" or above...
+            //This part of the script changes button goals, step goals
+            if (currentDif < 3) //During early game....
             {
+                stepGoal = 5 + (5*currentDif);
+                buttonGoal = 0;
+            }
+            //Post early game
+            if (currentDif >= 3)
+            {
+                stepGoal = 15 + (5 * currentDif);
                 buttonGoal = 1 + (2 * currentDif); //Sets button requirement by 1 + (2 * i), which is as base "6".
             }
-            else if (currentDif >= 4)
+            if (currentDif == 3) //If the difficulty is "Hard"...
+            {
+                enemyRarityMin = 2;
+            }
+            if (currentDif == 4)
             {
                 enemyRarityMin = 3;
             }
-            if (currentDif >= 5)
+            if (currentDif == 5)
             {
                 enemyRarityMin = 5;
             }
-            if (currentDif >= 6)
+            if (currentDif == 6)
             {
                 enemyRarityMin = 7;
             }
-            if (currentDif >= 7)
+            if (currentDif == 7)
             {
                 wrathOnly = true;
             }
-            if (currentDif >= 8 && currentDif <= 14)
+            if (currentDif >= 8 && currentDif <= 14) // From 8 till 14
             {
                 wrathOnly = false;
                 artificialErrorWrathCombo = true;
             }
-            if (currentDif >= 15 && currentDif <= 19)
+            if (currentDif >= 15 && currentDif <= 19) //From 15 till 19
             {
                 artificialErrorWrathCombo = false;
                 errorOnly = true;
             }
-            if (currentDif >= 20)
+            if (currentDif >= 20) //From 20 and up
             {
                 errorOnly = false;
                 buttonGoal = 50 + (currentDif * 10);
@@ -906,10 +933,15 @@ internal class program
 
         do
         {
+            UpdateGameInfo();
             //PRE FLOOR LAYER
 
             Console.WriteLine("Now moving to... Floor {0}.", currentFloor);
             Console.WriteLine("Current Difficulty... {0}.", displayDif);
+
+            Console.WriteLine($"DEBUG: Stepgoal {0}", stepGoal);
+            Console.WriteLine($"DEBUG: DifInt {0}", currentDif);
+
             Console.ReadKey();
             /*
              * Now comes the hard part
@@ -931,47 +963,72 @@ internal class program
              * 20+ - Solstice - If SOMEHOW you are to come here, the game will become unplayable. This is only used for development, and should in no way be continued. Upon continuing, will just freeze you in your steps and is only achieved with the debug menu.
              */
             //FLOOR LAYER
+            bool HotWireFailsafe = true; //prevents the game from skipping unless action is taken
+            bool ValidAnswer = false; //Prevents the game from skipping if answer is wrong
             do
             {
-                Console.WriteLine("Type what you will do.");
-                Console.WriteLine("Current Commands: Inventory, Step, Use, Status");
                 string answerGet;
-                answerGet = Console.ReadLine();
-                switch (answerGet)
+                do
                 {
-                    case "Inventory":
-                        Console.WriteLine("Your have {0} item(s).", Inventory.Count);
-                        foreach (Item Item in Inventory)
-                        {
-                            Console.WriteLine(Item.name);
-                        }
-                        break;
-                    case "Step":
+                    Console.WriteLine("Type what you will do.");
+                    Console.WriteLine("Current Commands: Inventory, Step, Use, Status");
+                    
+                    answerGet = Console.ReadLine();
 
-                        currentSteps = currentSteps + stepfinal;
-                        stepsTaken = stepsTaken + stepfinal;
+                    switch (answerGet)
+                    {
+                        case "Inventory":
+                            ValidAnswer = true;
+                            Console.WriteLine("Your have {0} item(s).", Inventory.Count);
+                            foreach (Item Item in Inventory)
+                            {
+                                Console.WriteLine(Item.name);
+                            }
+                            break;
+                        case "Step":
+                            if (stepfinal <= 0)
+                            {
+                                stepfinal = 3;
+                            }
+                            ValidAnswer = true;
+                            currentSteps = currentSteps + stepfinal;
+                            stepsTaken = stepsTaken + stepfinal;
 
-                        Console.WriteLine("Walked {0} steps.", stepfinal);
-                        break;
-                    case "Use":
-                        Console.WriteLine("Use which item? Type \"cancel\" to cancel.");
-                        foreach (Item Item in Inventory)
-                        {
-                            Console.WriteLine(Item.name);
-                        }
+                            Console.WriteLine("Walked {0} steps.", stepfinal);
+                            break;
+                        case "Use":
+                            ValidAnswer = true;
+                            Console.WriteLine("Use which item? Type \"cancel\" to cancel.");
+                            foreach (Item Item in Inventory)
+                            {
+                                Console.WriteLine(Item.name);
+                            }
 
-                        string useInput = "None";
-                        useInput = Console.ReadLine();
-                        if (Inventory.Any(item => item.name.Equals(useInput, StringComparison.OrdinalIgnoreCase)))
-                        {
-                            Console.WriteLine("DEBUG: Used {0}!", useInput);
-                            
-                        } else
-                        {
-                            Console.WriteLine("That's not an valid item!");
+                            string useInput = "None";
+                            useInput = Console.ReadLine();
+                            if (Inventory.Any(item => item.name.Equals(useInput, StringComparison.OrdinalIgnoreCase)))
+                            {
+                                Console.WriteLine("DEBUG: Used {0}!", useInput);
 
-                        }
-                        break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("That's not an valid item!");
+
+                            }
+                            break;
+                        default:
+                            ValidAnswer = false;
+                            Console.WriteLine("That's not a valid answer!");
+                            HotWireFailsafe = true;
+                            break;
+                    }
+                } while (ValidAnswer = false);
+
+
+                if (answerGet != null)
+                {
+                    HotWireFailsafe = false;
                 }
                 CheckFloorPass();
             } while (!floorpassed);
