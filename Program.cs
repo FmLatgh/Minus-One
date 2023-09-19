@@ -187,9 +187,10 @@ internal class program
             }
 
         }
-        void DeleteItem()
+        void DeleteItem(Item item)
         {
             
+
         }
 
         public Item(string name, int rarity, int itemUse, int maxuse, int currentuse, bool wornout, int ID)
@@ -425,7 +426,7 @@ internal class program
         //Variables that define Items and littering
         int littering = 20; // is an 1/definable % chance to spawn an item on a step
 
-        /*Sinchooser explaination:
+        /*Sinchooser explanation:
          * 0 = error (Activates when the player encounters an error, chosen by default)
          * 1 = gluttony (Activates when a player has used more than 10 items during the current floor)
          * 2 = lust (Activates when the player has encountered 5 or more monsters in generation)
@@ -578,11 +579,8 @@ internal class program
             if (currentDif >= 20) { displayDif = "Solstice"; }
 
             //Variables that explain during, after and before round information
-             spottedBy = "Line 561 error"; //Currently in debug!
-             killedBy = "Line 562 error"; //Currently in debug!
-
-            currentSteps = 0;
-            currentButtons = 0;
+             spottedBy = "Line 581 error"; //Currently in debug!
+             killedBy = "Line 582 error"; //Currently in debug!
 
             enemySpawnRarity = 100; //Percentage from 1 on X
 
@@ -722,6 +720,19 @@ internal class program
             return chosenitem;
 
         }
+
+
+
+        int checkForID (string usedI)
+{
+    var itemToUse = Inventory
+        .Where(item => item.name == usedI)
+        .OrderByDescending(item => item.ID) // Sort by ID in descending 
+        .FirstOrDefault();
+
+            int highestID = itemToUse.ID;
+            return highestID;
+}
 
         void ItemUseage(Item selectedItemString)
         {
@@ -1023,7 +1034,7 @@ internal class program
                             HotWireFailsafe = true;
                             break;
                     }
-                } while (ValidAnswer = false);
+                } while (ValidAnswer == false);
 
 
                 if (answerGet != null)
