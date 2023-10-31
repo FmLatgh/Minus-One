@@ -6,4 +6,4 @@ Features an infinite roguelike with Risk of Rain 2 -like difficulty scaling, -20
 
 Current state: Background done, busy with frontend development, such as gameplay
 
-Updated as of Wednesday 19-4-2023
+Updated as of Tuesday 19-9-2023
